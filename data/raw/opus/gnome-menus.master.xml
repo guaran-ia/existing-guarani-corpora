@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cesDoc type="text" version="1.0" TEIform="TEI.2">
+  <cesHeader type="text" creator="joerg" date.created="Sat Aug 16 03:01:52 2014">
+    <fileDesc>
+      <titleStmt>
+        <h.title />
+      </titleStmt>
+      <publicationStmt>
+        <distributor> </distributor>
+        <pubAdress />
+        <pubDate>2013-12-18 20:58+0000 </pubDate>
+        <availability>free</availability>
+      </publicationStmt>
+      <sourceDesc>
+        <biblStuct>
+          <monogr>
+            <h.title>src/l10n.gnome.org/POT/gnome-menus.master/gnome-menus.master.gn.po</h.title>
+          </monogr>
+        </biblStuct>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <change>
+        <changeDate>2006-04-25 10:14-0300 </changeDate>
+        <respName>Boca  boca@riseup.net  </respName>
+      </change>
+    </revisionDesc>
+  </cesHeader>
+  <text>
+    <body>
+      <div type="section">
+<s id="s1">Jaexaa, Porai Nhaendua</s>
+<s id="s2">Baemo Jaexaa, Nhaendua</s>
+<s id="s3">Jaja Poa</s>
+<s id="s4">Jaja Poa</s>
+<s id="s5">Arandu</s>
+<s id="s6">Jaugaa</s>
+<s id="s7">Jaugaty</s>
+<s id="s8">Baemo Ra'angaa Jajapoa</s>
+<s id="s9">Baemo Ra'angaa Jajapoa Oia</s>
+<s id="s10">Kya</s>
+<s id="s11">Kya Py Reike Awã Regua</s>
+<s id="s12">Nhamboparaa Regua</s>
+<s id="s13">Jaekaa Omboparaa</s>
+<s id="s17">Omboporaa Rerowa Rowaa</s>
+<s id="s18">Nhamba'eapoa Pygua</s>
+<s id="s19">Nhamba'eapoa Regua</s>
+<s id="s20">Enhepynru Apy</s>
+<s id="s21">Amboae</s>
+<s id="s22">Amboae Regua Jaekaa</s>
+<s id="s26">Enhepynru Apy</s>
+<s id="s28">Omboparaa Regua</s>
+<s id="s29">Nhamba'eapoa</s>
+<s id="s30">Mba'emon Nhamoia</s>
+<s id="s31">Rowapy Jarowa Rowaa</s>
+<s id="s32">Maranmi Reipota</s>
+<s id="s33">Preferências relativas à acessibilidade</s>
+<s id="s34">Preferências e configurações pessoais</s>
+<s id="s35">Nhambotea Regua</s>
+<s id="s36">_Enhepynru Apy:</s>
+<s id="s37">_Eka Apy:</s>
+<s id="s38">Derery</s>
+<s id="s39">Oexaukaa</s>
+<s id="s40">Oekaa Regua Omoin Porãa</s>
+<s id="s41">OEKAA REGUA OMOIN PORÃA</s>
+      </div>
+    </body>
+  </text>
+</cesDoc>
