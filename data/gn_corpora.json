@@ -1,0 +1,134 @@
+[
+    {
+        "name": "jojajovai",
+        "urls": 
+            [
+                "https://github.com/pln-fing-udelar/jojajovai/blob/main/data/jojajovai_all.csv"
+            ],
+        "format": "csv"
+    },
+    {
+        "name": "josa",
+        "urls": 
+            [
+                "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/blob/main/unbalanced/sa3_dev.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/blob/main/unbalanced/sa3_test.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/blob/main/unbalanced/sa3_train.txt"
+            ],
+        "format": "txt"
+    },
+    {
+        "name": "joemo",
+        "urls": 
+            [
+                "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/blob/main/emotion_dev.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/blob/main/emotion_test.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/blob/main/emotion_train.txt"
+            ],
+        "format": "txt"
+    },
+    {
+        "name": "joff+",
+        "urls": 
+            [
+                "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/blob/main/off_lang_dev.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/blob/main/off_lang_test.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/blob/main/off_lang_train.txt"
+            ],
+        "format": "txt"
+    },
+    {
+        "name": "jofun",
+        "urls": 
+            [
+                "https://huggingface.co/datasets/mmaguero/gn-humor-detection/blob/main/fun_dev.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-humor-detection/blob/main/fun_test.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-humor-detection/blob/main/fun_train.txt"
+            ],
+        "format": "txt"
+    },
+    {
+        "name": "gua_spa",
+        "urls": 
+            [
+                "https://github.com/pln-fing-udelar/gua-spa-2023/blob/main/gua_spa_dev.txt",
+                "https://github.com/pln-fing-udelar/gua-spa-2023/blob/main/gua_spa_dev_gold.txt",
+                "https://github.com/pln-fing-udelar/gua-spa-2023/blob/main/gua_spa_test.txt",
+                "https://github.com/pln-fing-udelar/gua-spa-2023/blob/main/gua_spa_test_gold.txt",
+                "https://github.com/pln-fing-udelar/gua-spa-2023/blob/main/gua_spa_train.txt"
+            ],
+        "format": "txt"
+    },
+    {
+        "name": "belele",
+        "urls": 
+            [
+                "https://huggingface.co/datasets/facebook/belebele/blob/main/data/grn_Latn.jsonl"
+            ],
+        "format": "jsonl"
+    },
+    {
+        "name": "americasnlp2021",
+        "urls": 
+            [
+                "https://raw.githubusercontent.com/AmericasNLP/americasnlp2021/refs/heads/main/data/guarani-spanish/dev.gn",
+                "https://raw.githubusercontent.com/AmericasNLP/americasnlp2021/refs/heads/main/data/guarani-spanish/train.gn"
+            ],
+        "format": "txt"
+    },
+    {
+        "name": "americasnlp2022",
+        "urls": 
+            [
+                "https://rcweb.dartmouth.edu/homes/f00458c/americasnlp2/GuaraniTrainDev.tar.gz"
+            ],
+        "format": "tar.gz"
+    },
+    {
+        "name": "americasnlp2023",
+        "urls": 
+            [
+                "https://raw.githubusercontent.com/AmericasNLP/americasnlp2023/refs/heads/main/data/guarani-spanish/dev.gn",
+                "https://raw.githubusercontent.com/AmericasNLP/americasnlp2023/refs/heads/main/data/guarani-spanish/train.gn"
+            ],
+        "format": "txt"
+    },
+    {
+        "name": "americasnlp2024",
+        "urls": 
+            [
+                "https://raw.githubusercontent.com/AmericasNLP/americasnlp2024/refs/heads/master/ST1_MachineTranslation/data/guarani-spanish/dev.gn",
+                "https://raw.githubusercontent.com/AmericasNLP/americasnlp2024/refs/heads/master/ST1_MachineTranslation/data/guarani-spanish/train.gn",
+                "https://raw.githubusercontent.com/AmericasNLP/americasnlp2024/refs/heads/master/ST1_MachineTranslation/data/guarani-spanish/extra.tsv",
+                "https://raw.githubusercontent.com/AmericasNLP/americasnlp2024/refs/heads/master/ST1_MachineTranslation/data/guarani-spanish/synthetic.tsv"
+            ],
+        "format": "txt"
+    },
+    {
+        "name": "opus",
+        "urls": 
+            [
+                "https://object.pouta.csc.fi/OPUS-GNOME/v1/raw/gn.zip"
+            ],
+        "format": "zip"
+    },
+    {
+        "name": "tatoeba",
+        "urls": 
+            [
+                "https://downloads.tatoeba.org/exports/per_language/grn/grn_sentences.tsv.bz2"
+            ],
+        "format": "bz2"
+    },
+    {
+        "name": "culturalx",
+        "urls": 
+            [
+                "https://huggingface.co/datasets/uonlp/CulturaX/blob/main/gn/gn_part_00000.parquet"
+            ],
+        "format": "parquet"
+    }
+]
+        
+
+
