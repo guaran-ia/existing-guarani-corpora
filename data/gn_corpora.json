@@ -3,7 +3,7 @@
         "name": "jojajovai",
         "urls": 
             [
-                "https://github.com/pln-fing-udelar/jojajovai/blob/main/data/jojajovai_all.csv"
+                "https://raw.githubusercontent.com/pln-fing-udelar/jojajovai/refs/heads/main/data/jojajovai_all.csv"
             ],
         "format": "csv"
     },
@@ -51,11 +51,11 @@
         "name": "gua_spa",
         "urls": 
             [
-                "https://github.com/pln-fing-udelar/gua-spa-2023/blob/main/gua_spa_dev.txt",
-                "https://github.com/pln-fing-udelar/gua-spa-2023/blob/main/gua_spa_dev_gold.txt",
-                "https://github.com/pln-fing-udelar/gua-spa-2023/blob/main/gua_spa_test.txt",
-                "https://github.com/pln-fing-udelar/gua-spa-2023/blob/main/gua_spa_test_gold.txt",
-                "https://github.com/pln-fing-udelar/gua-spa-2023/blob/main/gua_spa_train.txt"
+                "https://raw.githubusercontent.com/pln-fing-udelar/gua-spa-2023/refs/heads/main/gua_spa_dev.txt",
+                "https://raw.githubusercontent.com/pln-fing-udelar/gua-spa-2023/refs/heads/main/gua_spa_dev_gold.txt",
+                "https://raw.githubusercontent.com/pln-fing-udelar/gua-spa-2023/refs/heads/main/gua_spa_test.txt",
+                "https://raw.githubusercontent.com/pln-fing-udelar/gua-spa-2023/refs/heads/main/gua_spa_test_gold.txt",
+                "https://raw.githubusercontent.com/pln-fing-udelar/gua-spa-2023/refs/heads/main/gua_spa_train.txt"
             ],
         "format": "txt"
     },
@@ -124,7 +124,7 @@
         "name": "culturalx",
         "urls": 
             [
-                "https://huggingface.co/datasets/uonlp/CulturaX/blob/main/gn/gn_part_00000.parquet"
+                "https://huggingface.co/datasets/uonlp/CulturaX/resolve/main/gn/gn_part_00000.parquet"
             ],
         "format": "parquet"
     }
