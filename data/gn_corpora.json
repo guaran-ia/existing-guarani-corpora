@@ -63,7 +63,7 @@
         "name": "belele",
         "urls": 
             [
-                "https://huggingface.co/datasets/facebook/belebele/blob/main/data/grn_Latn.jsonl"
+                "https://huggingface.co/datasets/facebook/belebele/resolve/main/data/grn_Latn.jsonl"
             ],
         "format": "jsonl"
     },
