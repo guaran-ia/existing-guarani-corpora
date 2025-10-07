@@ -36,7 +36,7 @@ def identify_language(text):
     return None
 
 
-def create_jsonl(data, file_path):
+def create_jsonl(data, file_path, writing_mode='w'):
     """
     Creates a JSON Lines file from a list of dictionaries.
 
@@ -45,7 +45,7 @@ def create_jsonl(data, file_path):
         file_path (str): The path to the output JSON Lines file.
     """
     try:
-        with open(file_path, 'w', encoding='utf-8') as f:
+        with open(file_path, writing_mode, encoding='utf-8') as f:
             for item in data:
                   # Convert dictionary to JSON string
                 json_string = json.dumps(item, ensure_ascii=False)
