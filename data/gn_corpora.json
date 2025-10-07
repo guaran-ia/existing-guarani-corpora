@@ -11,9 +11,9 @@
         "name": "josa",
         "urls": 
             [
-                "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/blob/main/unbalanced/sa3_dev.txt",
-                "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/blob/main/unbalanced/sa3_test.txt",
-                "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/blob/main/unbalanced/sa3_train.txt"
+                "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/resolve/main/unbalanced/sa3_dev.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/resolve/main/unbalanced/sa3_test.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/resolve/main/unbalanced/sa3_train.txt"
             ],
         "format": "txt"
     },
@@ -21,9 +21,9 @@
         "name": "joemo",
         "urls": 
             [
-                "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/blob/main/emotion_dev.txt",
-                "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/blob/main/emotion_test.txt",
-                "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/blob/main/emotion_train.txt"
+                "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/resolve/main/emotion_dev.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/resolve/main/emotion_test.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/resolve/main/emotion_train.txt"
             ],
         "format": "txt"
     },
@@ -31,9 +31,9 @@
         "name": "joff+",
         "urls": 
             [
-                "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/blob/main/off_lang_dev.txt",
-                "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/blob/main/off_lang_test.txt",
-                "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/blob/main/off_lang_train.txt"
+                "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/resolve/main/off_lang_dev.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/resolve/main/off_lang_test.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/resolve/main/off_lang_train.txt"
             ],
         "format": "txt"
     },
@@ -41,9 +41,9 @@
         "name": "jofun",
         "urls": 
             [
-                "https://huggingface.co/datasets/mmaguero/gn-humor-detection/blob/main/fun_dev.txt",
-                "https://huggingface.co/datasets/mmaguero/gn-humor-detection/blob/main/fun_test.txt",
-                "https://huggingface.co/datasets/mmaguero/gn-humor-detection/blob/main/fun_train.txt"
+                "https://huggingface.co/datasets/mmaguero/gn-humor-detection/resolve/main/fun_dev.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-humor-detection/resolve/main/fun_test.txt",
+                "https://huggingface.co/datasets/mmaguero/gn-humor-detection/resolve/main/fun_train.txt"
             ],
         "format": "txt"
     },
