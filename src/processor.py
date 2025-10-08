@@ -88,7 +88,7 @@ def get_report_dict():
 
 
 def process_csv_corpus(file_path, output_dir_path, text_col_name, source_col_name, 
-                       url_col_name, corpus_name, lang_code='grn', lang_script='Latn',
+                       url_col_name, corpus_name, lang_code='grn', lang_script='Latn', 
                        writing_mode='w'):
     print(f'Processing CSV corpus: {"/".join(file_path.split("/")[-2:])}')
     df = pd.read_csv(file_path)
@@ -107,8 +107,10 @@ def process_csv_corpus(file_path, output_dir_path, text_col_name, source_col_nam
         report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
         report_dict['num_chars'] += len(text)
         report_dict['sum_lang_score'] += lang_score
+    output_dir_path = os.path.join(output_dir_path, corpus_name)
+    os.makedirs(output_dir_path, exist_ok=True)
     output_file_path = os.path.join(output_dir_path, f'{corpus_name}.jsonl')
-    create_jsonl(data, output_file_path)
+    create_jsonl(data, output_file_path, writing_mode)
     report_file_path = os.path.join(output_dir_path, f'{corpus_name}_report.json')
     save_report(report_dict, report_file_path)
     
@@ -133,6 +135,8 @@ def process_txt_corpus(file_path, output_dir_path, corpus_name, lang_code='grn',
             report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
             report_dict['num_chars'] += len(text)
             report_dict['sum_lang_score'] += lang_score
+    output_dir_path = os.path.join(output_dir_path, corpus_name)
+    os.makedirs(output_dir_path, exist_ok=True)
     output_file_path = os.path.join(output_dir_path, f'{corpus_name}.jsonl')
     create_jsonl(data, output_file_path, writing_mode)
     report_file_path = os.path.join(output_dir_path, f'{corpus_name}_report.json')
@@ -152,7 +156,8 @@ def get_corpus_file_names(corpus_dir_name, corpus_dir_path):
     return corpus_file_names
 
 
-def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename):
+def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename, 
+                                  processed_dir):
     file_path = os.path.join(corpus_dir_path, filename)
     if 'jojajovai' in corpus_dir_name:
         text_col_name = 'gn'
@@ -166,22 +171,28 @@ def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename):
         corpus_name = 'culturalx'
     else:
         raise Exception(f'Unknown corpus in path {corpus_dir_path}')
-    process_csv_corpus(file_path, corpus_dir_path, text_col_name, source_col_name, 
+    process_csv_corpus(file_path, processed_dir, text_col_name, source_col_name, 
                        url_col_name, corpus_name, writing_mode='a')
 
 
-def prepare_processing_txt_corpus(corpus_dir_path, corpus_dir_name, filename):
+def prepare_processing_txt_corpus(corpus_dir_path, corpus_dir_name, filename,
+                                  processed_dir):
     file_path = os.path.join(corpus_dir_path, filename)
     if 'americasnlp' in corpus_dir_name:
-            process_txt_corpus(file_path, corpus_dir_path, corpus_dir_name, writing_mode='a')
+            process_txt_corpus(file_path, processed_dir, corpus_dir_name, writing_mode='a')
 
 
-def process_corpora(dir_path):
+def process_corpora(dir_path, processed_corpora_dir):
+    os.makedirs(processed_corpora_dir, exist_ok=True)
     for corpus_dir_name in os.listdir(dir_path):
         corpus_path = os.path.join(dir_path, corpus_dir_name)
         corpus_file_names = get_corpus_file_names(corpus_dir_name, corpus_path)
         for filename in corpus_file_names:
             if filename.endswith('.csv'):
-                prepare_processing_cvs_corpus(corpus_path, corpus_dir_name, filename)
+                prepare_processing_cvs_corpus(
+                    corpus_path, corpus_dir_name, filename, processed_corpora_dir
+                )
             elif filename.endswith('.gn'):
-                prepare_processing_txt_corpus(corpus_path, corpus_dir_name, filename)
+                prepare_processing_txt_corpus(
+                    corpus_path, corpus_dir_name, filename, processed_corpora_dir
+                )

@@ -9,4 +9,5 @@ if __name__ == '__main__':
     download_corpora(project_dir)
     corpora_dir = os.path.join(project_dir, 'data', 'raw')
     process_parquet_files(corpora_dir)
-    process_corpora(corpora_dir)
+    processed_corpora_dir = os.path.join(project_dir, 'data', 'processed')
+    process_corpora(corpora_dir, processed_corpora_dir)
