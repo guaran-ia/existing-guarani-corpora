@@ -119,7 +119,7 @@
         "format": "bz2"
     },
     {
-        "name": "culturalx",
+        "name": "culturax",
         "urls": 
             [
                 "https://huggingface.co/datasets/uonlp/CulturaX/resolve/main/gn/gn_part_00000.parquet"
