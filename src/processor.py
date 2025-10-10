@@ -460,11 +460,11 @@ def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename,
         source_col_name = 'source'
         url_col_name = None
         corpus_name = 'jojajovai'
-    elif 'culturalx' in corpus_dir_name:
+    elif 'culturax' in corpus_dir_name:
         text_col_name = 'text'
         source_col_name = 'source'
         url_col_name = 'url'
-        corpus_name = 'culturalx'
+        corpus_name = 'culturax'
     else:
         raise Exception(f'Unknown corpus in path {corpus_dir_path}')
     process_csv_corpus(file_path, processed_dir, corpus_name, text_col_name, 
