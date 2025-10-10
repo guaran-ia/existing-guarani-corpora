@@ -1,10 +1,11 @@
 import json
 import os
 import pandas as pd
+import re
 import xml.etree.ElementTree as ET
 
 from utils import create_jsonl, word_count_spacy, word_count_split, \
-    identify_language, save_to_json
+    identify_language, save_to_json, sanitize_tsv_corpus
 
 
 def process_parquet_files(dir_path):
@@ -19,7 +20,7 @@ def process_parquet_files(dir_path):
                     print(f'Processed file saved to {output_path}')
 
 
-def process_text(text, corpus_name, source, url, lang_code, lang_script):
+def process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script):
     num_words_split = word_count_split(text)
     num_words_punct_spacy = word_count_spacy(text, include_punct=True)
     num_words_no_punct_spacy = word_count_spacy(text, include_punct=False)
@@ -33,6 +34,7 @@ def process_text(text, corpus_name, source, url, lang_code, lang_script):
     text_dict = {
         'text': text,
         'corpus': corpus_name,
+        'corpus_file': corpus_file_name,
         'source': source,
         'url': url,
         'language': lang_code,
@@ -98,20 +100,33 @@ def get_report_dict():
     }
 
 
+def read_csv_corpus(file_path, sep=',', names=None, ignore_bad_lines=True, 
+                    drop_incomplete_records=True):
+    if ignore_bad_lines:
+        df = pd.read_csv(file_path, sep=sep, encoding='utf-8', names=names, 
+                           on_bad_lines='skip')
+    else:
+        df = pd.read_csv(file_path, sep=sep, encoding='utf-8', names=names)
+    if drop_incomplete_records:
+        df = df.dropna()
+    return df
+
+
 def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name, 
                        source_col_name='', url_col_name='', lang_code='grn', 
                        lang_script='Latn', writing_mode='a', sep=',', names=None):
-    print(f'Processing CSV corpus: {"/".join(file_path.split("/")[-2:])}')
-    df = pd.read_csv(file_path, sep=sep, encoding='utf-8', names=names)
+    print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
+    df = read_csv_corpus(file_path, sep, names)
     report_dict = get_report_dict()
     data = []
+    corpus_file_name = file_path.split('/')[-1]
     for _, row in df.iterrows():
         text = row[text_col_name]
         if isinstance(text, str):
             source = row[source_col_name] if source_col_name in row else 'unknown'
             url = row[url_col_name] if url_col_name in row else 'unknown'
             text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
-                process_text(text, corpus_name, source, url, lang_code, lang_script)
+                process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
             data.append(text_dict)
             report_dict['num_docs'] += 1
             report_dict['num_words_split'] += num_words_split
@@ -119,17 +134,26 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
             report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
             report_dict['num_chars'] += len(text)
             report_dict['sum_lang_score'] += lang_score
+        else:
+            print(f'Text {text} not an instance of string, excluding...')
+    print(f'Finished processing {corpus_file_name}. From {df.shape[0]} lines, {report_dict["num_docs"]} were included')
     save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
-    
+
+
+def read_txt_corpus(file_path):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        f_lines = f.readlines()
+    return f_lines
+
 
 def process_txt_corpus(file_path, output_dir_path, corpus_name, lang_code='grn', 
                        lang_script='Latn', writing_mode='a', separator=None, 
                        line_prefix=''):
-    print(f'Processing CSV corpus: {"/".join(file_path.split("/")[-2:])}')
-    with open(file_path, 'r', encoding='utf-8') as f:
-        f_lines = f.readlines()
+    print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
     data = []
     report_dict = get_report_dict()
+    f_lines = read_txt_corpus(file_path)
+    corpus_file_name = file_path.split('/')[-1]
     for f_line in f_lines:
         text = f_line.strip()
         if text and isinstance(text, str):
@@ -138,7 +162,7 @@ def process_txt_corpus(file_path, output_dir_path, corpus_name, lang_code='grn',
             if separator:
                 text = text.split(separator['str'])[separator['idx']]
             text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
-                process_text(text, corpus_name, 'unknown', 'unknown', lang_code, lang_script)
+                process_text(text, corpus_name, corpus_file_name, 'unknown', 'unknown', lang_code, lang_script)
             data.append(text_dict)
             report_dict['num_docs'] += 1
             report_dict['num_words_split'] += num_words_split
@@ -147,23 +171,28 @@ def process_txt_corpus(file_path, output_dir_path, corpus_name, lang_code='grn',
             report_dict['num_chars'] += len(text)
             report_dict['sum_lang_score'] += lang_score
     save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
+
+
+def read_xml_corpus(file_path):
+    tree = ET.parse(file_path)
+    root = tree.getroot()  # Get the root element
+    text_list = []
+    for element in root.findall('.//s'):  # Find all 's' elements
+        text_list.append(element.text)
+    return text_list
 
 
 def process_xml_corpus(file_path, output_dir_path, corpus_name, lang_code='grn', 
                        lang_script='Latn', writing_mode='a'):
-    tree = ET.parse(file_path)
-    root = tree.getroot()  # Get the root element
-
-    print(f'Processing CSV corpus: {"/".join(file_path.split("/")[-2:])}')
-    
+    print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
     data = []
     report_dict = get_report_dict()
-    # Iterate through elements
-    for element in root.findall('.//s'):  # Find all 's' elements
-        text = element.text
+    text_list = read_xml_corpus(file_path)
+    corpus_file_name = file_path.split('/')[-1]
+    for text in text_list:
         if isinstance(text, str):
             text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
-                    process_text(text, corpus_name, 'unknown', 'unknown', lang_code, lang_script)
+                    process_text(text, corpus_name, corpus_file_name, 'unknown', 'unknown', lang_code, lang_script)
             data.append(text_dict)
             report_dict['num_docs'] += 1
             report_dict['num_words_split'] += num_words_split
@@ -174,20 +203,27 @@ def process_xml_corpus(file_path, output_dir_path, corpus_name, lang_code='grn',
     save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
 
 
-def process_json_corpus(file_path, output_dir_path, corpus_name, lang_code='grn', 
-                       lang_script='Latn', writing_mode='a'):
+def read_jsonl_corpus(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         f_data = []
         for line in f:
             json_object = json.loads(line.strip())
             f_data.append(json_object)
+    return f_data
+
+
+def process_jsonl_corpus(file_path, output_dir_path, corpus_name, lang_code='grn', 
+                       lang_script='Latn', writing_mode='a'):
+    print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
     data = []
     report_dict = get_report_dict()
+    f_data = read_jsonl_corpus(file_path)
+    corpus_file_name = file_path.split('/')[-1]
     for line in f_data:
         for text in [line['flores_passage'], line['question']]:
             if isinstance(text, str):
                 text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
-                    process_text(text, corpus_name, 'unknown', 'unknown', lang_code, lang_script)
+                    process_text(text, corpus_name, corpus_file_name, 'unknown', 'unknown', lang_code, lang_script)
                 data.append(text_dict)
                 report_dict['num_docs'] += 1
                 report_dict['num_words_split'] += num_words_split
@@ -198,17 +234,8 @@ def process_json_corpus(file_path, output_dir_path, corpus_name, lang_code='grn'
     save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
 
 
-def get_corpus_file_names(corpus_dir_name, corpus_dir_path):
-    corpus_file_names = os.listdir(corpus_dir_path)
-    processed_file_name = f'{corpus_dir_name}.jsonl'
-    report_processed_file_name = f'{corpus_dir_name}_report.json'
-    if processed_file_name in corpus_file_names:
-        os.remove(os.path.join(corpus_dir_path, processed_file_name))
-        corpus_file_names.remove(processed_file_name)
-    if report_processed_file_name in corpus_file_names:
-        os.remove(os.path.join(corpus_dir_path, report_processed_file_name))
-        corpus_file_names.remove(report_processed_file_name)
-    return corpus_file_names
+def get_corpus_file_names(corpus_dir_path):
+    return os.listdir(corpus_dir_path)
 
 
 def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename, 
@@ -250,6 +277,8 @@ def prepare_processing_tsv_corpus(corpus_dir_path, corpus_dir_name, filename,
     if corpus_dir_name == 'americasnlp2022':
         text_col_name = 'source_processed'
     elif corpus_dir_name in ['americasnlp2024', 'tatoeba']:
+        if corpus_dir_name == 'americasnlp2024':
+            sanitize_tsv_corpus(file_path)
         text_col_name = 'col3'
         names = ['col1', 'col2', 'col3']
     else:
@@ -264,17 +293,17 @@ def prepare_processing_xml_corpus(corpus_dir_path, corpus_dir_name, filename,
     process_xml_corpus(file_path, processed_dir, corpus_dir_name)
 
 
-def prepare_processing_json_corpus(corpus_dir_path, corpus_dir_name, filename, 
+def prepare_processing_jsonl_corpus(corpus_dir_path, corpus_dir_name, filename, 
                                    processed_dir):
     file_path = os.path.join(corpus_dir_path, filename)
-    process_json_corpus(file_path, processed_dir, corpus_dir_name)
+    process_jsonl_corpus(file_path, processed_dir, corpus_dir_name)
 
 
 def process_corpora(dir_path, processed_corpora_dir):
     os.makedirs(processed_corpora_dir, exist_ok=True)
     for corpus_dir_name in os.listdir(dir_path):
         corpus_path = os.path.join(dir_path, corpus_dir_name)
-        corpus_file_names = get_corpus_file_names(corpus_dir_name, corpus_path)
+        corpus_file_names = get_corpus_file_names(corpus_path)
         for filename in corpus_file_names:
             if filename.endswith('.csv'):
                 prepare_processing_cvs_corpus(
@@ -293,9 +322,78 @@ def process_corpora(dir_path, processed_corpora_dir):
                     corpus_path, corpus_dir_name, filename, processed_corpora_dir
                 )
             elif filename.endswith('jsonl'):
-                prepare_processing_json_corpus(
+                prepare_processing_jsonl_corpus(
                     corpus_path, corpus_dir_name, filename, processed_corpora_dir
                 )
             else:
                 print(f'Extension of the file {filename} is not supported')
-            
+
+
+def compute_num_raw_records(raw_corpora_dir):
+    raw_records = {}
+    for corpus_dir_name in os.listdir(raw_corpora_dir):
+        raw_records[corpus_dir_name] = 0
+        corpus_path = os.path.join(raw_corpora_dir, corpus_dir_name)
+        corpus_file_names = get_corpus_file_names(corpus_path)
+        for filename in corpus_file_names:
+            file_path = os.path.join(corpus_path, filename)            
+            if filename.endswith('.csv'):
+                df = read_csv_corpus(file_path)
+                raw_records[corpus_dir_name] += df.shape[0]
+            elif filename.endswith('.gn') or filename.endswith('.txt'):
+                file_content = read_txt_corpus(file_path)
+                if corpus_dir_name == 'gua_spa':
+                    # for the corpus gua_spa only lines starting with the pattern 
+                    # below should be included
+                    pattern = r"^#[A-Za-z0-9]+:" # (e.g., `#dev15:`, `#test179:`)
+                    text_lines = [line for line in file_content if re.match(pattern, line)]
+                    raw_records[corpus_dir_name] += len(text_lines)
+                else:
+                    raw_records[corpus_dir_name] += len(file_content)
+            elif filename.endswith('.tsv'):
+                names = None
+                if corpus_dir_name in ['americasnlp2024', 'tatoeba']:
+                    names = ['col1', 'col2', 'col3']
+                df = read_csv_corpus(file_path, '\t', names)
+                raw_records[corpus_dir_name] += df.shape[0]
+            elif filename.endswith('xml'):
+                raw_records[corpus_dir_name] += len(read_xml_corpus(file_path))
+            elif filename.endswith('jsonl'):
+                mult_factor = 1
+                if corpus_dir_name == 'belele':
+                    # for each record in raw belele two lines are created in the 
+                    # processed corpus, one line for the question
+                    # and the other for the `flores` passage. therefore, the
+                    # number of lines in the raw files is multipled by 2 to obtain
+                    # the total number of lines in the processed corpus
+                    mult_factor = 2
+                raw_records[corpus_dir_name] += len(read_jsonl_corpus(file_path)) * mult_factor
+    return raw_records
+
+
+def check_processed_corpora(processed_corpora_dir, raw_records):
+    for corpus_dir_name in os.listdir(processed_corpora_dir):
+        print(f'Checking corpus {corpus_dir_name}...')
+        corpus_path = os.path.join(processed_corpora_dir, corpus_dir_name)
+        corpus_file_names = get_corpus_file_names(corpus_path)
+        for filename in corpus_file_names:
+            file_path = os.path.join(corpus_path, filename)
+            raw_corpus_num_records = raw_records[corpus_dir_name]
+            if filename.endswith('json'):
+                with open(file_path, 'r') as f:
+                    processed_corpus_report = json.load(f)
+                assert processed_corpus_report['num_docs'] == raw_corpus_num_records, \
+                    f"Number of records reported for the copus {corpus_dir_name} is incorrect, "\
+                    f"expected {raw_corpus_num_records}, reported {processed_corpus_report['num_docs']}"
+            if filename.endswith('jsonl'):
+                processed_corpus_num_records = len(read_jsonl_corpus(file_path))
+                assert processed_corpus_num_records == raw_corpus_num_records, \
+                    f"Number of processed records for the corpus {corpus_dir_name} is inconsistent, "\
+                    f"expected {raw_corpus_num_records}, processed {processed_corpus_num_records}"
+        print(f'Ok {corpus_dir_name}!')
+    print('Everything is correct!, the number of proccessed records matchs expectation for each corpus')
+
+
+def verify_processed_corpora(raw_corpora_dir, processed_corpora_dir):
+    raw_records = compute_num_raw_records(raw_corpora_dir)
+    check_processed_corpora(processed_corpora_dir, raw_records)

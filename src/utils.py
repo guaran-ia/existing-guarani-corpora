@@ -1,4 +1,5 @@
 import json
+import re
 import spacy
 
 from corpus.src.pipeline.language_identifier.language_identifier import LanguageIdentifier
@@ -72,3 +73,17 @@ def save_to_json(data, file_path):
     except Exception as e:
         print(f'Error creating JSON file: {e}')
 
+
+def sanitize_tsv_corpus(file_path):
+    clean_tsv = []
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+        for line in f:
+            # 1. Remove all double quotes
+            line = line.replace('"', '')
+            # 2. Collapse multiple tabs into a single one
+            line = re.sub(r'\t+', '\t', line.strip())
+            # 3. Ensure each line ends properly
+            clean_tsv.append(f'{line}\n')
+    with open(file_path, 'w', encoding='utf-8') as f:
+        for line in clean_tsv:
+            f.write(line)

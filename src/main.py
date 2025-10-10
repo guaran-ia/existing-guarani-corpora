@@ -1,7 +1,7 @@
 import os
 
 from downloader import download_corpora
-from processor import process_parquet_files, process_corpora
+from processor import process_parquet_files, process_corpora, verify_processed_corpora
 
 
 if __name__ == '__main__':
@@ -11,3 +11,5 @@ if __name__ == '__main__':
     process_parquet_files(corpora_dir)
     processed_corpora_dir = os.path.join(project_dir, 'data', 'processed')
     process_corpora(corpora_dir, processed_corpora_dir)
+    verify_processed_corpora(corpora_dir, processed_corpora_dir)
+    
