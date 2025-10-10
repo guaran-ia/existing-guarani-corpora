@@ -9,6 +9,19 @@ from utils import create_jsonl, word_count_spacy, word_count_split, \
 
 
 def process_parquet_files(dir_path):
+    """
+    Convert all `.parquet` files in a directory (recursively) to `.csv` format.
+
+    Traverses the given directory tree, finds all Parquet files, and converts each 
+    one into a corresponding CSV file using pandas with the PyArrow engine.
+    If a corresponding CSV already exists, it will be skipped.
+
+    Args:
+        dir_path (str): Path to the root directory containing Parquet files.
+
+    Returns:
+        None
+    """
     for root, _, files in os.walk(dir_path):
         for filename in files:
             if filename.endswith('.parquet'):
@@ -21,6 +34,30 @@ def process_parquet_files(dir_path):
 
 
 def process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script):
+    """
+    Process and annotate a text sample with linguistic metadata and word counts.
+
+    Performs word counting using two methods (split and spaCy), identifies the 
+    language, and compiles metadata describing the text for corpus integration.
+
+    Args:
+        text (str): The input text sample.
+        corpus_name (str): Name of the corpus the text belongs to.
+        corpus_file_name (str): Name of the file the text was extracted from.
+        source (str): Source name or origin of the text.
+        url (str): URL of the original text (if available).
+        lang_code (str): Expected ISO 639-3 language code.
+        lang_script (str): Script code (e.g., "Latn", "Cyrl").
+
+    Returns:
+        tuple: A tuple containing:
+            - text_dict (dict): Dictionary with annotated text metadata.
+            - num_words_split (int)
+            - num_words_punct_spacy (int)
+            - num_words_no_punct_spacy (int)
+            - lang_score (float)
+    """
+    
     num_words_split = word_count_split(text)
     num_words_punct_spacy = word_count_spacy(text, include_punct=True)
     num_words_no_punct_spacy = word_count_spacy(text, include_punct=False)
@@ -51,6 +88,19 @@ def process_text(text, corpus_name, corpus_file_name, source, url, lang_code, la
 
 
 def save_report(report_dict, report_file_path):
+    """
+    Generate and save a JSON report summarizing corpus statistics.
+
+    Updates an existing report if it exists, aggregates statistics, and computes
+    averages for word counts, characters, and language identification scores.
+
+    Args:
+        report_dict (dict): Dictionary containing corpus-level statistics.
+        report_file_path (str): File path to save or update the JSON report.
+
+    Returns:
+        None
+    """
     if os.path.exists(report_file_path):
         with open(report_file_path, 'r') as f:
             e_report_dict = json.load(f)
@@ -59,7 +109,7 @@ def save_report(report_dict, report_file_path):
         report_dict['num_words_split'] += e_report_dict['num_words_split']
         report_dict['num_words_punct_spacy'] += e_report_dict['num_words_punct_spacy']
         report_dict['num_words_no_punct_spacy'] += e_report_dict['num_words_no_punct_spacy']
-        report_dict['num_chars'] += e_report_dict['num_words_no_punct_spacy']
+        report_dict['num_chars'] += e_report_dict['num_chars']
         report_dict['sum_lang_score'] += e_report_dict['sum_lang_score']
     
     if report_dict['num_docs'] > 0:
@@ -75,6 +125,22 @@ def save_report(report_dict, report_file_path):
 
 
 def save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict):
+    """
+    Save processed corpus data and associated report to disk.
+
+    Creates a corpus-specific subdirectory (if missing), writes the processed
+    samples to a JSONL file, and saves statistical summaries to a JSON report.
+
+    Args:
+        output_dir_path (str): Directory path for output corpora.
+        corpus_name (str): Name of the corpus being processed.
+        data (list[dict]): List of text metadata dictionaries.
+        writing_mode (str): File write mode ('a' for append, 'w' for overwrite).
+        report_dict (dict): Aggregated statistics for the corpus.
+
+    Returns:
+        None
+    """
     output_dir_path = os.path.join(output_dir_path, corpus_name)
     os.makedirs(output_dir_path, exist_ok=True)
     output_file_path = os.path.join(output_dir_path, f'{corpus_name}.jsonl')
@@ -85,6 +151,13 @@ def save_processing(output_dir_path, corpus_name, data, writing_mode, report_dic
 
 
 def get_report_dict():
+    """
+    Initialize an empty report dictionary for corpus statistics tracking.
+
+    Returns:
+        dict: Dictionary with zero-initialized counters for word counts,
+        character counts, and average statistics.
+    """
     return {
         'num_docs': 0,
         'num_words_split': 0,
@@ -102,6 +175,19 @@ def get_report_dict():
 
 def read_csv_corpus(file_path, sep=',', names=None, ignore_bad_lines=True, 
                     drop_incomplete_records=True):
+    """
+    Read and clean a corpus from a CSV or TSV file.
+
+    Args:
+        file_path (str): Path to the CSV/TSV file.
+        sep (str, optional): Column separator (default ',').
+        names (list[str], optional): Custom column names.
+        ignore_bad_lines (bool, optional): Skip malformed lines (default True).
+        drop_incomplete_records (bool, optional): Drop rows with missing values (default True).
+
+    Returns:
+        pandas.DataFrame: Cleaned DataFrame containing corpus records.
+    """
     if ignore_bad_lines:
         df = pd.read_csv(file_path, sep=sep, encoding='utf-8', names=names, 
                            on_bad_lines='skip')
@@ -115,6 +201,28 @@ def read_csv_corpus(file_path, sep=',', names=None, ignore_bad_lines=True,
 def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name, 
                        source_col_name='', url_col_name='', lang_code='grn', 
                        lang_script='Latn', writing_mode='a', sep=',', names=None):
+    """
+    Process and export a text corpus stored in CSV/TSV format.
+
+    Reads text data, extracts metadata, performs linguistic analysis, and writes
+    processed records to a JSONL file with a corresponding report.
+
+    Args:
+        file_path (str): Path to the CSV or TSV corpus file.
+        output_dir_path (str): Directory for output corpus data.
+        corpus_name (str): Name of the corpus.
+        text_col_name (str): Column containing the text.
+        source_col_name (str, optional): Column with source information.
+        url_col_name (str, optional): Column with URLs.
+        lang_code (str, optional): Default language code (default 'grn').
+        lang_script (str, optional): Default script code (default 'Latn').
+        writing_mode (str, optional): File mode for JSONL ('a' or 'w').
+        sep (str, optional): Field separator (default ',').
+        names (list[str], optional): Column names override.
+
+    Returns:
+        None
+    """
     print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
     df = read_csv_corpus(file_path, sep, names)
     report_dict = get_report_dict()
@@ -141,6 +249,15 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
 
 
 def read_txt_corpus(file_path):
+    """
+    Read a plain-text corpus file as a list of lines.
+
+    Args:
+        file_path (str): Path to the text file.
+
+    Returns:
+        list[str]: List of lines read from the file.
+    """
     with open(file_path, 'r', encoding='utf-8') as f:
         f_lines = f.readlines()
     return f_lines
@@ -149,6 +266,25 @@ def read_txt_corpus(file_path):
 def process_txt_corpus(file_path, output_dir_path, corpus_name, lang_code='grn', 
                        lang_script='Latn', writing_mode='a', separator=None, 
                        line_prefix=''):
+    """
+    Process a line-based text corpus (e.g., `.txt`, `.gn` files).
+
+    Supports line filtering, optional prefix-based selection, and splitting lines
+    on custom separators. Each valid text line is analyzed and stored.
+
+    Args:
+        file_path (str): Path to the text file.
+        output_dir_path (str): Output directory path.
+        corpus_name (str): Name of the corpus.
+        lang_code (str, optional): Default language code (default 'grn').
+        lang_script (str, optional): Script code (default 'Latn').
+        writing_mode (str, optional): Write mode for output file.
+        separator (dict, optional): Dict specifying {'str': separator, 'idx': column index}.
+        line_prefix (str, optional): Only process lines starting with this prefix.
+
+    Returns:
+        None
+    """
     print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
     data = []
     report_dict = get_report_dict()
@@ -174,6 +310,17 @@ def process_txt_corpus(file_path, output_dir_path, corpus_name, lang_code='grn',
 
 
 def read_xml_corpus(file_path):
+    """
+    Parse an XML corpus and extract text segments.
+
+    Extracts text from all `<s>` elements within the XML document.
+
+    Args:
+        file_path (str): Path to the XML file.
+
+    Returns:
+        list[str]: List of text elements extracted from the XML structure.
+    """
     tree = ET.parse(file_path)
     root = tree.getroot()  # Get the root element
     text_list = []
@@ -184,6 +331,23 @@ def read_xml_corpus(file_path):
 
 def process_xml_corpus(file_path, output_dir_path, corpus_name, lang_code='grn', 
                        lang_script='Latn', writing_mode='a'):
+    """
+    Process and export an XML-based text corpus.
+
+    Parses XML structure, extracts sentences, performs word counting and 
+    language identification, and writes results to JSONL and report files.
+
+    Args:
+        file_path (str): Path to the XML file.
+        output_dir_path (str): Output directory for processed corpus.
+        corpus_name (str): Corpus identifier.
+        lang_code (str, optional): Default language code.
+        lang_script (str, optional): Script code.
+        writing_mode (str, optional): Output write mode.
+
+    Returns:
+        None
+    """
     print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
     data = []
     report_dict = get_report_dict()
@@ -204,6 +368,15 @@ def process_xml_corpus(file_path, output_dir_path, corpus_name, lang_code='grn',
 
 
 def read_jsonl_corpus(file_path):
+    """
+    Read a JSONL (JSON Lines) corpus into memory.
+
+    Args:
+        file_path (str): Path to the JSONL file.
+
+    Returns:
+        list[dict]: List of JSON objects representing corpus entries.
+    """
     with open(file_path, 'r', encoding='utf-8') as f:
         f_data = []
         for line in f:
@@ -214,6 +387,23 @@ def read_jsonl_corpus(file_path):
 
 def process_jsonl_corpus(file_path, output_dir_path, corpus_name, lang_code='grn', 
                        lang_script='Latn', writing_mode='a'):
+    """
+    Process a corpus stored in JSON Lines (JSONL) format.
+
+    Iterates through JSON records, extracts relevant text fields (e.g., 
+    'flores_passage' and 'question'), analyzes them, and saves results.
+
+    Args:
+        file_path (str): Path to the JSONL corpus file.
+        output_dir_path (str): Directory for processed corpus.
+        corpus_name (str): Corpus name.
+        lang_code (str, optional): Language code.
+        lang_script (str, optional): Script code.
+        writing_mode (str, optional): File writing mode ('a' or 'w').
+
+    Returns:
+        None
+    """
     print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
     data = []
     report_dict = get_report_dict()
@@ -235,11 +425,35 @@ def process_jsonl_corpus(file_path, output_dir_path, corpus_name, lang_code='grn
 
 
 def get_corpus_file_names(corpus_dir_path):
+    """
+    List all corpus files within a directory.
+
+    Args:
+        corpus_dir_path (str): Path to a corpus directory.
+
+    Returns:
+        list[str]: Filenames contained in the directory.
+    """
     return os.listdir(corpus_dir_path)
 
 
 def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename, 
                                   processed_dir):
+    """
+    Identify corpus type and process a CSV-based corpus accordingly.
+
+    Determines schema and processing parameters based on the corpus name,
+    then delegates processing to `process_csv_corpus`.
+
+    Args:
+        corpus_dir_path (str): Directory containing corpus files.
+        corpus_dir_name (str): Corpus name identifier.
+        filename (str): File name to process.
+        processed_dir (str): Output directory for processed results.
+
+    Returns:
+        None
+    """
     file_path = os.path.join(corpus_dir_path, filename)
     if 'jojajovai' in corpus_dir_name:
         text_col_name = 'gn'
@@ -259,6 +473,21 @@ def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename,
 
 def prepare_processing_txt_corpus(corpus_dir_path, corpus_dir_name, filename,
                                   processed_dir):
+    """
+    Configure and process a text corpus file.
+
+    Applies corpus-specific preprocessing logic (e.g., separators, line prefixes),
+    then calls `process_txt_corpus`.
+
+    Args:
+        corpus_dir_path (str): Path to the corpus directory.
+        corpus_dir_name (str): Name of the corpus.
+        filename (str): Text file to process.
+        processed_dir (str): Output directory for processed corpora.
+
+    Returns:
+        None
+    """
     file_path = os.path.join(corpus_dir_path, filename)
     separator, line_prefix = None, ''
     if corpus_dir_name in ['joemo', 'joff+', 'jofun', 'josa']:
@@ -272,6 +501,21 @@ def prepare_processing_txt_corpus(corpus_dir_path, corpus_dir_name, filename,
 
 def prepare_processing_tsv_corpus(corpus_dir_path, corpus_dir_name, filename, 
                                   processed_dir):
+    """
+    Configure and process a TSV-based corpus.
+
+    Handles specific corpus schemas (e.g., AmericasNLP variants, Tatoeba),
+    and sanitizes TSV files if necessary before processing.
+
+    Args:
+        corpus_dir_path (str): Path to corpus directory.
+        corpus_dir_name (str): Corpus name identifier.
+        filename (str): TSV file to process.
+        processed_dir (str): Output directory.
+
+    Returns:
+        None
+    """
     file_path = os.path.join(corpus_dir_path, filename)
     names = None
     if corpus_dir_name == 'americasnlp2022':
@@ -289,17 +533,54 @@ def prepare_processing_tsv_corpus(corpus_dir_path, corpus_dir_name, filename,
 
 def prepare_processing_xml_corpus(corpus_dir_path, corpus_dir_name, filename, 
                                   processed_dir):
+    """
+    Prepare and process an XML corpus file.
+
+    Args:
+        corpus_dir_path (str): Directory containing the XML corpus.
+        corpus_dir_name (str): Corpus name identifier.
+        filename (str): XML file name.
+        processed_dir (str): Directory to save processed corpus.
+
+    Returns:
+        None
+    """
     file_path = os.path.join(corpus_dir_path, filename)
     process_xml_corpus(file_path, processed_dir, corpus_dir_name)
 
 
 def prepare_processing_jsonl_corpus(corpus_dir_path, corpus_dir_name, filename, 
                                    processed_dir):
+    """
+    Prepare and process a JSONL corpus file.
+
+    Args:
+        corpus_dir_path (str): Path to corpus directory.
+        corpus_dir_name (str): Name of corpus.
+        filename (str): JSONL file name.
+        processed_dir (str): Output directory.
+
+    Returns:
+        None
+    """
     file_path = os.path.join(corpus_dir_path, filename)
     process_jsonl_corpus(file_path, processed_dir, corpus_dir_name)
 
 
 def process_corpora(dir_path, processed_corpora_dir):
+    """
+    Process all supported corpus files in a directory tree.
+
+    Detects corpus format by file extension and dispatches to the appropriate
+    processing routine (CSV, TXT, TSV, XML, JSONL).
+
+    Args:
+        dir_path (str): Path to directory containing corpora.
+        processed_corpora_dir (str): Directory to store processed results.
+
+    Returns:
+        None
+    """
     os.makedirs(processed_corpora_dir, exist_ok=True)
     for corpus_dir_name in os.listdir(dir_path):
         corpus_path = os.path.join(dir_path, corpus_dir_name)
@@ -330,6 +611,18 @@ def process_corpora(dir_path, processed_corpora_dir):
 
 
 def compute_num_raw_records(raw_corpora_dir):
+    """
+    Compute the number of raw records across all corpora.
+
+    Inspects each corpus file, counts raw text records, and accounts for 
+    format-specific nuances (e.g., line filtering).
+
+    Args:
+        raw_corpora_dir (str): Directory containing unprocessed corpora.
+
+    Returns:
+        dict: Mapping of corpus name → number of raw records.
+    """
     raw_records = {}
     for corpus_dir_name in os.listdir(raw_corpora_dir):
         raw_records[corpus_dir_name] = 0
@@ -372,6 +665,19 @@ def compute_num_raw_records(raw_corpora_dir):
 
 
 def check_processed_corpora(processed_corpora_dir, raw_records):
+    """
+    Validate that processed corpora match the expected record counts.
+
+    Cross-checks processed JSONL and report files against counts computed
+    from raw corpora. Raises assertion errors on mismatches.
+
+    Args:
+        processed_corpora_dir (str): Directory with processed corpora.
+        raw_records (dict): Mapping of corpus name → expected record count.
+
+    Returns:
+        None
+    """
     for corpus_dir_name in os.listdir(processed_corpora_dir):
         print(f'Checking corpus {corpus_dir_name}...')
         corpus_path = os.path.join(processed_corpora_dir, corpus_dir_name)
@@ -395,5 +701,18 @@ def check_processed_corpora(processed_corpora_dir, raw_records):
 
 
 def verify_processed_corpora(raw_corpora_dir, processed_corpora_dir):
+    """
+    Verify consistency between raw and processed corpora.
+
+    Combines record counting (`compute_num_raw_records`) and validation
+    (`check_processed_corpora`) into a full verification pipeline.
+
+    Args:
+        raw_corpora_dir (str): Directory with raw corpora.
+        processed_corpora_dir (str): Directory with processed corpora.
+
+    Returns:
+        None
+    """
     raw_records = compute_num_raw_records(raw_corpora_dir)
     check_processed_corpora(processed_corpora_dir, raw_records)
