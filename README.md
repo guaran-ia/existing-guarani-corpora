@@ -157,7 +157,7 @@ and adds a HuggingFace Access Token to the `env` file.
 * Average number of characters per document: 50.72
 * Average proportion of Guarani in documents: 0.78
 
-### [Jofun](https://huggingface.co/datasets/mmaguero/gn-humor-detection/resolve/main/fun_dev.txt)
+### [Jofun](https://huggingface.co/datasets/mmaguero/gn-humor-detection)
 
 * Number of docs: 1,842
 * Number of words: 12,958
