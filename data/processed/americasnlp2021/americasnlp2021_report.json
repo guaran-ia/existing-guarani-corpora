@@ -1,13 +1,13 @@
 {
-    "num_docs": 108108,
-    "num_words_split": 1652700,
-    "num_words_punct_spacy": 2025368,
-    "num_words_no_punct_spacy": 1698492,
-    "num_chars": 1745856,
-    "sum_lang_score": 105814.4328276515,
+    "num_docs": 27027,
+    "num_words_split": 413175,
+    "num_words_punct_spacy": 506342,
+    "num_words_no_punct_spacy": 424623,
+    "num_chars": 471987,
+    "sum_lang_score": 26453.608206912875,
     "avg_words_split": 15.287490287490288,
     "avg_words_punct_spacy": 18.734672734672735,
     "avg_words_no_punct_spacy": 15.711066711066712,
-    "avg_chars": 16.149184149184148,
+    "avg_chars": 17.463536463536464,
     "avg_language_score": 0.9787844824402588
 }
