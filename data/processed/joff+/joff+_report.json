@@ -3,11 +3,11 @@
     "num_words_split": 15016,
     "num_words_punct_spacy": 18660,
     "num_words_no_punct_spacy": 16751,
-    "num_chars": 32296,
+    "num_chars": 110058,
     "sum_lang_score": 1700.562644302845,
     "avg_words_split": 6.919815668202765,
     "avg_words_punct_spacy": 8.599078341013826,
     "avg_words_no_punct_spacy": 7.719354838709678,
-    "avg_chars": 14.88294930875576,
+    "avg_chars": 50.71797235023041,
     "avg_language_score": 0.7836694213377166
 }
