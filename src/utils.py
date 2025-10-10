@@ -9,13 +9,43 @@ from corpus.src.pipeline.language_identifier.language_identifier import Language
 word_seg = spacy.blank("xx")
 # set up guarani language identifier
 identifier = LanguageIdentifier(glotlid=True, fasttext=True, openlid=True)
+# define Guarani iso-6393 code
+GN_CODE = 'grn'
 
 
 def word_count_split(text):
-  return (len(text.split()))
+    """
+    Count the number of whitespace-separated tokens in a text string.
+
+    This simple method splits the input string on whitespace characters
+    and counts the resulting tokens. It does not perform any linguistic 
+    normalization or punctuation filtering.
+
+    Args:
+        text (str): Input text to analyze.
+
+    Returns:
+        int: Number of tokens obtained by splitting the text on whitespace.
+    """
+    return (len(text.split()))
 
 
 def word_count_spacy(text, include_punct=False):
+    """
+    Count the number of word tokens in a text using spaCy segmentation.
+
+    Uses the `word_seg` tokenizer to segment the input text and counts
+    tokens according to the specified punctuation inclusion rule.
+
+    Args:
+        text (str): Input text to be tokenized.
+        include_punct (bool, optional): 
+            If True, include punctuation tokens in the count.
+            If False (default), exclude them.
+
+    Returns:
+        int: Number of tokens in the text after applying the inclusion rule.
+    """
     words = []
     for t in word_seg(text):
       if not include_punct and t.is_punct:
@@ -25,9 +55,29 @@ def word_count_spacy(text, include_punct=False):
 
 
 def identify_language(text):
+    """
+    Identify the primary language of a text using a language identification model.
+
+    Utilizes a preconfigured `identifier` model to predict the most likely
+    language of the input text. If the detected language is Guarani ('grn'),
+    detailed metadata about the identification is returned; otherwise, None.
+
+    Args:
+        text (str): Input text whose language is to be identified.
+
+    Returns:
+        dict | None: 
+            A dictionary containing language identification metadata if
+            the detected language is 'grn', with the following keys:
+                - 'lang' (str): Detected ISO 639-3 language code.
+                - 'score' (float): Confidence score for the detection.
+                - 'source_score' (float): Model-specific source score.
+                - 'voting_method' (str): Method used for voting in language detection.
+            Returns None if the language is not 'grn'.
+    """
     result = identifier.identify_languages(text, k=1, raw_output=False)
     identified_lang = result['languages']
-    if identified_lang[0] == 'grn':
+    if identified_lang[0] == GN_CODE:
         return {
             'lang': identified_lang[0], 
             'score': identified_lang[1], 
@@ -75,6 +125,23 @@ def save_to_json(data, file_path):
 
 
 def sanitize_tsv_corpus(file_path):
+    """
+    Clean and normalize a TSV (tab-separated values) corpus file in place.
+
+    This function performs three cleaning operations to ensure TSV data 
+    consistency and compatibility with downstream corpus processing:
+      1. Removes all double-quote characters (`"`).
+      2. Collapses consecutive tab characters into a single tab.
+      3. Strips trailing/leading whitespace and ensures each line ends with a newline.
+
+    The cleaned content replaces the original file contents.
+
+    Args:
+        file_path (str): Path to the TSV file to be sanitized.
+
+    Returns:
+        None
+    """
     clean_tsv = []
     with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
         for line in f:
