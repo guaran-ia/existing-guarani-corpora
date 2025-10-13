@@ -159,7 +159,7 @@
     {
         "name": "tatoeba",
         "url": "https://tatoeba.org/en/downloads",
-        "urdownload_urlsls": 
+        "download_urls": 
             [
                 "https://downloads.tatoeba.org/exports/per_language/grn/grn_sentences.tsv.bz2"
             ],
@@ -181,5 +181,19 @@
         "parallel": false,
         "synthetic": false,
         "license": "Open Data and Creative Commons"
+    },
+    {
+        "name": "americasnli",
+        "url": "https://github.com/abteen/americasnli",
+        "download_urls": 
+            [
+                "http://raw.githubusercontent.com/abteen/americasnli/refs/heads/main/data/anli_final/dev/gn.tsv",
+                "https://raw.githubusercontent.com/abteen/americasnli/refs/heads/main/data/anli_final/test/gn.tsv"
+            ],
+        "format": "tsv",
+        "multilingual": false,
+        "parallel": false,
+        "synthetic": false,
+        "license": "Creative Commons"
     }
 ]

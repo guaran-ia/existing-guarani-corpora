@@ -199,8 +199,9 @@ def read_csv_corpus(file_path, sep=',', names=None, ignore_bad_lines=True,
 
 
 def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name, 
-                       source_col_name='', url_col_name='', lang_code='grn', 
-                       lang_script='Latn', writing_mode='a', sep=',', names=None):
+                       source_col_name='', url_col_name='', 
+                       lang_code='grn', lang_script='Latn', writing_mode='a', 
+                       sep=',', names=None):
     """
     Process and export a text corpus stored in CSV/TSV format.
 
@@ -226,8 +227,8 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
     print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
     df = read_csv_corpus(file_path, sep, names)
     report_dict = get_report_dict()
-    data = []
     corpus_file_name = file_path.split('/')[-1]
+    data = []
     for _, row in df.iterrows():
         text = row[text_col_name]
         if isinstance(text, str):
@@ -244,6 +245,10 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
             report_dict['sum_lang_score'] += lang_score
         else:
             print(f'Text {text} not an instance of string, excluding...')
+    if corpus_name == 'americasnli':
+        text_collection = df['premise'].unique().tolist()
+        data.extend(process_text_collection(text_collection, report_dict, corpus_name,
+                                            corpus_file_name, lang_code, lang_script))
     print(f'Finished processing {corpus_file_name}. From {df.shape[0]} lines, {report_dict["num_docs"]} were included')
     save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
 
@@ -261,6 +266,31 @@ def read_txt_corpus(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         f_lines = f.readlines()
     return f_lines
+
+
+def process_text_collection(content_collection, report_dict, corpus_name, 
+                            corpus_file_name, lang_code, lang_script, line_prefix='',
+                            separator=''):
+    data = []
+    for text in content_collection:
+        text = text.strip()
+        if text and isinstance(text, str):
+            if line_prefix and not text.startswith(line_prefix):
+                continue
+            if separator:
+                text = text.split(separator['str'])[separator['idx']]
+            text_dict, num_words_split, num_words_punct_spacy, \
+                num_words_no_punct_spacy, lang_score = \
+                process_text(text, corpus_name, corpus_file_name, 'unknown', 
+                             'unknown', lang_code, lang_script)
+            data.append(text_dict)
+            report_dict['num_docs'] += 1
+            report_dict['num_words_split'] += num_words_split
+            report_dict['num_words_punct_spacy'] += num_words_punct_spacy
+            report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
+            report_dict['num_chars'] += len(text)
+            report_dict['sum_lang_score'] += lang_score
+    return data
 
 
 def process_txt_corpus(file_path, output_dir_path, corpus_name, lang_code='grn', 
@@ -286,26 +316,12 @@ def process_txt_corpus(file_path, output_dir_path, corpus_name, lang_code='grn',
         None
     """
     print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
-    data = []
     report_dict = get_report_dict()
     f_lines = read_txt_corpus(file_path)
     corpus_file_name = file_path.split('/')[-1]
-    for f_line in f_lines:
-        text = f_line.strip()
-        if text and isinstance(text, str):
-            if line_prefix and not text.startswith(line_prefix):
-                continue
-            if separator:
-                text = text.split(separator['str'])[separator['idx']]
-            text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
-                process_text(text, corpus_name, corpus_file_name, 'unknown', 'unknown', lang_code, lang_script)
-            data.append(text_dict)
-            report_dict['num_docs'] += 1
-            report_dict['num_words_split'] += num_words_split
-            report_dict['num_words_punct_spacy'] += num_words_punct_spacy
-            report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
-            report_dict['num_chars'] += len(text)
-            report_dict['sum_lang_score'] += lang_score
+    data = process_text_collection(f_lines, report_dict, corpus_name, 
+                                   corpus_file_name, lang_code, lang_script, 
+                                   line_prefix, separator)
     save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
 
 
@@ -349,21 +365,11 @@ def process_xml_corpus(file_path, output_dir_path, corpus_name, lang_code='grn',
         None
     """
     print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
-    data = []
     report_dict = get_report_dict()
     text_list = read_xml_corpus(file_path)
     corpus_file_name = file_path.split('/')[-1]
-    for text in text_list:
-        if isinstance(text, str):
-            text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
-                    process_text(text, corpus_name, corpus_file_name, 'unknown', 'unknown', lang_code, lang_script)
-            data.append(text_dict)
-            report_dict['num_docs'] += 1
-            report_dict['num_words_split'] += num_words_split
-            report_dict['num_words_punct_spacy'] += num_words_punct_spacy
-            report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
-            report_dict['num_chars'] += len(text)
-            report_dict['sum_lang_score'] += lang_score
+    data = process_text_collection(text_list, report_dict, corpus_name,
+                                   corpus_file_name, lang_code, lang_script)
     save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
 
 
@@ -520,6 +526,9 @@ def prepare_processing_tsv_corpus(corpus_dir_path, corpus_dir_name, filename,
     names = None
     if corpus_dir_name == 'americasnlp2022':
         text_col_name = 'source_processed'
+    elif corpus_dir_name == 'americasnli':
+        text_col_name = 'hypothesis'
+        sanitize_tsv_corpus(file_path)
     elif corpus_dir_name in ['americasnlp2024', 'tatoeba']:
         if corpus_dir_name == 'americasnlp2024':
             sanitize_tsv_corpus(file_path)
@@ -644,11 +653,15 @@ def compute_num_raw_records(raw_corpora_dir):
                 else:
                     raw_records[corpus_dir_name] += len(file_content)
             elif filename.endswith('.tsv'):
-                names = None
-                if corpus_dir_name in ['americasnlp2024', 'tatoeba']:
-                    names = ['col1', 'col2', 'col3']
-                df = read_csv_corpus(file_path, '\t', names)
-                raw_records[corpus_dir_name] += df.shape[0]
+                if corpus_dir_name == 'americasnli':
+                    df = read_csv_corpus(file_path, '\t')
+                    raw_records[corpus_dir_name] += df.shape[0] + len(df['premise'].unique())
+                else:
+                    names = None
+                    if corpus_dir_name in ['americasnlp2024', 'tatoeba']:
+                        names = ['col1', 'col2', 'col3']
+                    df = read_csv_corpus(file_path, '\t', names)
+                    raw_records[corpus_dir_name] += df.shape[0]
             elif filename.endswith('xml'):
                 raw_records[corpus_dir_name] += len(read_xml_corpus(file_path))
             elif filename.endswith('jsonl'):

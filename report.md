@@ -17,4 +17,5 @@ Publicly available corpora that contain text in Guarani.
 |[opus](https://opus.nlpl.eu/GNOME/es&gn/v1/GNOME)|:white_check_mark:| | |GNU General Public License|267|627|4,388|2.348|16.434|0.340| 
 |[tatoeba](https://tatoeba.org/en/downloads)|:white_check_mark:| | |Creative Commons|3,367|13,269|95,040|3.941|28.227|0.939| 
 |[culturax](https://huggingface.co/datasets/uonlp/CulturaX)|:white_check_mark:| | |Open Data and Creative Commons|63|2,333|17,437|37.032|276.778|0.998| 
-| Total |  |  |  | 184,058 | 2,509,856 | 19,186,342 |  |  |  | 
+|[americasnli](https://github.com/abteen/americasnli)| | | |Creative Commons|1,990|13,611|101,889|6.840|51.201|0.983| 
+| Total |  |  |  | 186,048 | 2,523,467 | 19,288,231 |  |  |  | 
