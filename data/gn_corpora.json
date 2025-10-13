@@ -1,132 +1,185 @@
 [
     {
         "name": "jojajovai",
-        "urls": 
+        "url": "https://github.com/pln-fing-udelar/jojajovai",
+        "download_urls": 
             [
                 "https://raw.githubusercontent.com/pln-fing-udelar/jojajovai/refs/heads/main/data/jojajovai_all.csv"
             ],
-        "format": "csv"
+        "format": "csv",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "MIT"
     },
     {
         "name": "josa",
-        "urls": 
+        "url": "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis",
+        "download_urls": 
             [
                 "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/resolve/main/unbalanced/sa3_dev.txt",
                 "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/resolve/main/unbalanced/sa3_test.txt",
                 "https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis/resolve/main/unbalanced/sa3_train.txt"
             ],
-        "format": "txt"
+        "format": "txt",
+        "multilingual": false,
+        "parallel": false,
+        "synthetic": false,
+        "license": "MIT"
     },
     {
         "name": "joemo",
-        "urls": 
+        "url": "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition",
+        "download_urls": 
             [
                 "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/resolve/main/emotion_dev.txt",
                 "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/resolve/main/emotion_test.txt",
                 "https://huggingface.co/datasets/mmaguero/gn-emotion-recognition/resolve/main/emotion_train.txt"
             ],
-        "format": "txt"
+        "format": "txt",
+        "multilingual": false,
+        "parallel": false,
+        "synthetic": false,
+        "license": "MIT"
     },
     {
         "name": "joff+",
-        "urls": 
+        "url": "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification",
+        "download_urls": 
             [
                 "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/resolve/main/off_lang_dev.txt",
                 "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/resolve/main/off_lang_test.txt",
                 "https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification/resolve/main/off_lang_train.txt"
             ],
-        "format": "txt"
+        "format": "txt",
+        "multilingual": false,
+        "parallel": false,
+        "synthetic": false,
+        "license": "MIT"
     },
     {
         "name": "jofun",
-        "urls": 
+        "url": "https://huggingface.co/datasets/mmaguero/gn-humor-detection",
+        "download_urls": 
             [
                 "https://huggingface.co/datasets/mmaguero/gn-humor-detection/resolve/main/fun_dev.txt",
                 "https://huggingface.co/datasets/mmaguero/gn-humor-detection/resolve/main/fun_test.txt",
                 "https://huggingface.co/datasets/mmaguero/gn-humor-detection/resolve/main/fun_train.txt"
             ],
-        "format": "txt"
+        "format": "txt",
+        "multilingual": false,
+        "parallel": false,
+        "synthetic": false,
+        "license": "MIT"
     },
     {
         "name": "gua_spa",
-        "urls": 
+        "url": "https://github.com/pln-fing-udelar/gua-spa-2023",
+        "download_urls": 
             [
                 "https://raw.githubusercontent.com/pln-fing-udelar/gua-spa-2023/refs/heads/main/gua_spa_dev.txt",
                 "https://raw.githubusercontent.com/pln-fing-udelar/gua-spa-2023/refs/heads/main/gua_spa_test.txt",
                 "https://raw.githubusercontent.com/pln-fing-udelar/gua-spa-2023/refs/heads/main/gua_spa_train.txt"
             ],
-        "format": "txt"
+        "format": "txt",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "Unknown"
     },
     {
         "name": "belele",
-        "urls": 
+        "url": "https://huggingface.co/datasets/facebook/2M-Belebele",
+        "download_urls": 
             [
                 "https://huggingface.co/datasets/facebook/belebele/resolve/main/data/grn_Latn.jsonl"
             ],
-        "format": "jsonl"
-    },
-    {
-        "name": "americasnlp2021",
-        "urls": 
-            [
-                "https://raw.githubusercontent.com/AmericasNLP/americasnlp2021/refs/heads/main/data/guarani-spanish/dev.gn",
-                "https://raw.githubusercontent.com/AmericasNLP/americasnlp2021/refs/heads/main/data/guarani-spanish/train.gn"
-            ],
-        "format": "txt"
+        "format": "jsonl",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "Creative Commons"
     },
     {
         "name": "americasnlp2022",
-        "urls": 
+        "url": "https://github.com/AmericasNLP/americasnlp2022",
+        "download_urls": 
             [
                 "https://rcweb.dartmouth.edu/homes/f00458c/americasnlp2/GuaraniTrainDev.tar.gz"
             ],
-        "format": "tar.gz"
+        "format": "tar.gz",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "Unknown"
     },
     {
         "name": "americasnlp2023",
-        "urls": 
+        "url": "https://github.com/AmericasNLP/americasnlp2023",
+        "download_urls": 
             [
                 "https://raw.githubusercontent.com/AmericasNLP/americasnlp2023/refs/heads/main/data/guarani-spanish/dev.gn",
                 "https://raw.githubusercontent.com/AmericasNLP/americasnlp2023/refs/heads/main/data/guarani-spanish/train.gn"
             ],
-        "format": "txt"
+        "format": "txt",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "Unknown"
     },
     {
         "name": "americasnlp2024",
-        "urls": 
+        "url": "https://github.com/AmericasNLP/americasnlp2024",
+        "download_urls": 
             [
                 "https://raw.githubusercontent.com/AmericasNLP/americasnlp2024/refs/heads/master/ST1_MachineTranslation/data/guarani-spanish/dev.gn",
                 "https://raw.githubusercontent.com/AmericasNLP/americasnlp2024/refs/heads/master/ST1_MachineTranslation/data/guarani-spanish/train.gn",
                 "https://raw.githubusercontent.com/AmericasNLP/americasnlp2024/refs/heads/master/ST1_MachineTranslation/data/guarani-spanish/extra.tsv",
                 "https://raw.githubusercontent.com/AmericasNLP/americasnlp2024/refs/heads/master/ST1_MachineTranslation/data/guarani-spanish/synthetic.tsv"
             ],
-        "format": "txt"
+        "format": "txt",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "Unknown"
     },
     {
         "name": "opus",
-        "urls": 
+        "url": "https://opus.nlpl.eu/GNOME/es&gn/v1/GNOME",
+        "download_urls": 
             [
                 "https://object.pouta.csc.fi/OPUS-GNOME/v1/raw/gn.zip"
             ],
-        "format": "zip"
+        "format": "zip",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "GNU General Public License"
     },
     {
         "name": "tatoeba",
-        "urls": 
+        "url": "https://tatoeba.org/en/downloads",
+        "urdownload_urlsls": 
             [
                 "https://downloads.tatoeba.org/exports/per_language/grn/grn_sentences.tsv.bz2"
             ],
-        "format": "bz2"
+        "format": "bz2",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "Creative Commons"
     },
     {
         "name": "culturax",
-        "urls": 
+        "url": "https://huggingface.co/datasets/uonlp/CulturaX",
+        "download_urls": 
             [
                 "https://huggingface.co/datasets/uonlp/CulturaX/resolve/main/gn/gn_part_00000.parquet"
             ],
-        "format": "parquet"
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "Open Data and Creative Commons"
     }
 ]
-        
-
-
