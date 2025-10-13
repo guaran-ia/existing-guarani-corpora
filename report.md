@@ -1,4 +1,4 @@
-# Guarani Corpora 
+# Open Guarani Corpora 
 
 Publicly available corpora that contain text in Guarani. 
 
