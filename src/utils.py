@@ -162,7 +162,7 @@ def create_report(project_dir):
     file_path = os.path.join(data_dir, 'gn_corpora.json')
     with open(file_path, 'r', encoding='utf-8') as f:
         gn_corpora = json.load(f)
-    report = "# Guarani Corpora \nPublicly available corpora that contain text in Guarani. \n---\n\n"
+    report = "# Guarani Corpora \n\nPublicly available corpora that contain text in Guarani. \n---\n\n"
     report += "|Name|Multilingual|Parallel|Synthetic|License|Docs in Gn|Total Words|Total Chars|Avg. Words/Doc|Avg. Chars/Doc|Avg. Prop. of Gn| \n"
     report += "|:---|:---:|:---:|:---:|:---|---:|---:|---:|---:|---:|---:| \n"
     total_docs, total_words, total_chars = 0, 0, 0
