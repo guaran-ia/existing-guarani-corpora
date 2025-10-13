@@ -1,7 +1,6 @@
 # Guarani Corpora 
 
 Publicly available corpora that contain text in Guarani. 
----
 
 |Name|Multilingual|Parallel|Synthetic|License|Docs in Gn|Total Words|Total Chars|Avg. Words/Doc|Avg. Chars/Doc|Avg. Prop. of Gn| 
 |:---|:---:|:---:|:---:|:---|---:|---:|---:|---:|---:|---:| 
