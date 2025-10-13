@@ -7,7 +7,7 @@
                 "https://raw.githubusercontent.com/pln-fing-udelar/jojajovai/refs/heads/main/data/jojajovai_all.csv"
             ],
         "format": "csv",
-        "multilingual": true,
+        "multilingual": false,
         "parallel": true,
         "synthetic": false,
         "license": "MIT"
@@ -82,7 +82,7 @@
                 "https://raw.githubusercontent.com/pln-fing-udelar/gua-spa-2023/refs/heads/main/gua_spa_train.txt"
             ],
         "format": "txt",
-        "multilingual": true,
+        "multilingual": false,
         "parallel": true,
         "synthetic": false,
         "license": "Unknown"
@@ -108,7 +108,7 @@
                 "https://rcweb.dartmouth.edu/homes/f00458c/americasnlp2/GuaraniTrainDev.tar.gz"
             ],
         "format": "tar.gz",
-        "multilingual": true,
+        "multilingual": false,
         "parallel": true,
         "synthetic": false,
         "license": "Unknown"
@@ -122,7 +122,7 @@
                 "https://raw.githubusercontent.com/AmericasNLP/americasnlp2023/refs/heads/main/data/guarani-spanish/train.gn"
             ],
         "format": "txt",
-        "multilingual": true,
+        "multilingual": false,
         "parallel": true,
         "synthetic": false,
         "license": "Unknown"
@@ -138,7 +138,7 @@
                 "https://raw.githubusercontent.com/AmericasNLP/americasnlp2024/refs/heads/master/ST1_MachineTranslation/data/guarani-spanish/synthetic.tsv"
             ],
         "format": "txt",
-        "multilingual": true,
+        "multilingual": false,
         "parallel": true,
         "synthetic": false,
         "license": "Unknown"
