@@ -2,8 +2,9 @@
 
 This repo contains the code used to explore the corpora containing Guarani text. 
 In total, 11 corpora were analyzed including: `americasnlp`, `belele`, `culturax`,
-`tatoeba`, `opus`, and `jojajovai`. The full list of corpora with their respective
-download url can be accessed at `data/gn_corpora.json`.
+`tatoeba`, `opus`, and `jojajovai`. Multilingual and parallel corpora were examined
+processing only the Guarani text available in these datasets. The full list of 
+corpora with their respective download urls can be accessed at `data/gn_corpora.json`.
 
 ## Processing Pipeline
 
@@ -82,131 +83,6 @@ python main.py
 previously accept a license of usage. In this sense, it is required that an 
 autheticated HuggingFace user accepts this licenses before executing the code 
 and adds a HuggingFace Access Token to the `env` file.
-
-## Corpora statistics
-
-### Americas NLP [2021](https://github.com/AmericasNLP/americasnlp2021) and [2023](https://github.com/AmericasNLP/americasnlp2023)
-
-* Number of docs: 27,027
-* Number of words: 413,175
-* Number of characters: 3,161,598
-* Average number of words per document: 15.29
-* Average number of characters per document: 116.98
-* Average proportion of Guarani in documents: 0.98
-
-### [Americas NLP 2022](https://github.com/AmericasNLP/americasnlp2022)
-
-* Number of docs: 386
-* Number of words: 1,666
-* Number of characters: 11,941
-* Average number of words per document: 4.32
-* Average number of characters per document: 30.93
-* Average proportion of Guarani in documents: 0.92
-
-### [Americas NLP 2024](https://github.com/AmericasNLP/americasnlp2024)
-
-* Number of docs: 109,719
-* Number of words: 1,446,800
-* Number of characters: 11,053,563
-* Average number of words per document: 13.19
-* Average number of characters per document: 100.74
-* Average proportion of Guarani in documents: 0.95
-
-### [Belele](https://huggingface.co/datasets/facebook/2M-Belebele)
-
-* Number of docs: 1,800
-* Number of words: 65,713
-* Number of characters: 503,106
-* Average number of words per document: 36.51
-* Average number of characters per document: 279.50
-* Average proportion of Guarani in documents: 0.99
-
-### [CulturaX](https://huggingface.co/datasets/uonlp/CulturaX)
-
-* Number of docs: 63
-* Number of words: 2,333
-* Number of characters: 17,437
-* Average number of words per document: 37.03
-* Average number of characters per document: 276.78
-* Average proportion of Guarani in documents: 0.99
-
-### [Gua-Spa](https://github.com/pln-fing-udelar/gua-spa-2023)
-
-* Number of docs: 1,500
-* Number of words: 23,855
-* Number of characters: 150,185
-* Average number of words per document: 15.90
-* Average number of characters per document: 100.12
-* Average proportion of Guarani in documents: 0.73
-
-### [Joemo](https://huggingface.co/datasets/mmaguero/gn-emotion-recognition)
-
-* Number of docs: 1,571
-* Number of words: 10,693
-* Number of characters: 78,034
-* Average number of words per document: 6.81
-* Average number of characters per document: 49.67
-* Average proportion of Guarani in documents: 0.77
-
-### [Joff+](https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification)
-
-* Number of docs: 2,170
-* Number of words: 15,016
-* Number of characters: 110,058
-* Average number of words per document: 6.92
-* Average number of characters per document: 50.72
-* Average proportion of Guarani in documents: 0.78
-
-### [Jofun](https://huggingface.co/datasets/mmaguero/gn-humor-detection)
-
-* Number of docs: 1,842
-* Number of words: 12,958
-* Number of characters: 95,196
-* Average number of words per document: 7.03
-* Average number of characters per document: 51.68
-* Average proportion of Guarani in documents: 0.79
-
-### [Jojajovai](https://github.com/pln-fing-udelar/jojajovai)
-
-* Number of docs: 30,855
-* Number of words: 456,446
-* Number of characters: 3,517,466
-* Average number of words per document: 14.79
-* Average number of characters per document: 113.99
-* Average proportion of Guarani in documents: 0.96
-
-### [Josa](https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis)
-
-* Number of docs: 3,491
-* Number of words: 47,305
-* Number of characters: 388,330
-* Average number of words per document: 13.55
-* Average number of characters per document: 111.24
-* Average proportion of Guarani in documents: 0.81
-
-### [Opus](https://opus.nlpl.eu/GNOME/es&gn/v1/GNOME)
-
-* Number of docs: 267
-* Number of words: 627
-* Number of characters: 4,388
-* Average number of words per document: 2.34
-* Average number of characters per document: 16.43
-* Average proportion of Guarani in documents: 0.34
-
-### [Tatoeba](https://tatoeba.org/en/downloads)
-
-* Number of docs: 3,367
-* Number of words: 13,269
-* Number of characters: 95,040
-* Average number of words per document: 3.94
-* Average number of characters per document: 28.23
-* Average proportion of Guarani in documents: 0.94
-
-### Total
-
-* Number of docs: 191,058
-* Number of words: 2,509,856
-* Number of characters: 19,186,342
 
 ## Contributors
 

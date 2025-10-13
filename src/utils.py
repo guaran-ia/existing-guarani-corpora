@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import spacy
 
@@ -154,3 +155,46 @@ def sanitize_tsv_corpus(file_path):
     with open(file_path, 'w', encoding='utf-8') as f:
         for line in clean_tsv:
             f.write(line)
+            
+        
+def create_report(project_dir):
+    data_dir = os.path.join(project_dir, 'data')
+    file_path = os.path.join(data_dir, 'gn_corpora.json')
+    with open(file_path, 'r', encoding='utf-8') as f:
+        gn_corpora = json.load(f)
+    report = "# Guarani Corpora \nPublicly available corpora that contain text in Guarani. \n---\n\n"
+    report += "|Name|Multilingual|Parallel|Synthetic|License|Docs in Gn|Total Words|Total Chars|Avg. Words/Doc|Avg. Chars/Doc|Avg. Prop. of Gn| \n"
+    report += "|:---|:---:|:---:|:---:|:---|---:|---:|---:|---:|---:|---:| \n"
+    total_docs, total_words, total_chars = 0, 0, 0
+    for corpus in gn_corpora:
+        report += f"|[{corpus['name']}]({corpus['url']})|"
+        if corpus['multilingual']:
+            report += ":white_check_mark:|"
+        else:
+            report += " |"
+        if corpus['parallel']:
+            report += ":white_check_mark:|"
+        else:
+            report += " |"
+        if corpus['synthetic']:
+            report += ":white_check_mark:|"
+        else:
+            report += " |"
+        report += f"{corpus['license']}|"
+        corpus_report_file_path = os.path.join(data_dir, 'processed', corpus['name'], 
+                                               f"{corpus['name']}_report.json")
+        with open(corpus_report_file_path, 'r') as f:
+            corpus_report_dict = json.load(f)
+        report += f"{corpus_report_dict['num_docs']:,}|"
+        total_docs += corpus_report_dict['num_docs']
+        report += f"{corpus_report_dict['num_words_split']:,}|"
+        total_words += corpus_report_dict['num_words_split']
+        report += f"{corpus_report_dict['num_chars']:,}|"
+        total_chars += corpus_report_dict['num_chars']
+        report += f"{corpus_report_dict['avg_words_split']:.3f}|"
+        report += f"{corpus_report_dict['avg_chars']:.3f}|"
+        report += f"{corpus_report_dict['avg_language_score']:.3f}| \n"
+    report += f"| Total |  |  |  | {total_docs:,} | {total_words:,} | {total_chars:,} |  |  |  | \n"
+    report_file_path = os.path.join(project_dir, 'report.md')
+    with open(report_file_path, 'w') as f:
+        f.write(report)

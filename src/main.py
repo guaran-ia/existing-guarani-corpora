@@ -2,6 +2,7 @@ import os
 
 from downloader import download_corpora
 from processor import process_parquet_files, process_corpora, verify_processed_corpora
+from utils import create_report
 
 
 if __name__ == '__main__':
@@ -16,4 +17,6 @@ if __name__ == '__main__':
     process_corpora(corpora_dir, processed_corpora_dir)
     # verify processed corpora
     verify_processed_corpora(corpora_dir, processed_corpora_dir)
+    # create report
+    create_report(project_dir)
     
