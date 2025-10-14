@@ -194,7 +194,7 @@ def create_report(project_dir):
         report += f"{corpus_report_dict['avg_words_split']:.3f}|"
         report += f"{corpus_report_dict['avg_chars']:.3f}|"
         report += f"{corpus_report_dict['avg_language_score']:.3f}| \n"
-    report += f"| Total |  |  |  | {total_docs:,} | {total_words:,} | {total_chars:,} |  |  |  | \n"
+    report += f"| Total |  |  |  |   |  | {total_docs:,} | {total_words:,} | {total_chars:,} |  |  |  \n"
     report_file_path = os.path.join(project_dir, 'report.md')
     with open(report_file_path, 'w') as f:
         f.write(report)
