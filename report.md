@@ -21,4 +21,4 @@ Publicly available corpora that contain text in Guarani.
 |[bible](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|22,818|386,549|2,684,120|16.941|117.632|0.990| 
 |[ancora](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|14,120|334,973|2,320,434|23.723|164.337|0.810| 
 |[grammar](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|277,842|999,398|8,343,710|3.597|30.030|0.957| 
-| Total |  |  |  |   |  | 500,828 | 4,244,387 | 32,636,495 |  |  |  
+| Total |  |  |  |   | 500,828 | 4,244,387 | 32,636,495 |  |  |  |  
