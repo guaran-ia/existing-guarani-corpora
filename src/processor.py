@@ -501,6 +501,8 @@ def prepare_processing_txt_corpus(corpus_dir_path, corpus_dir_name, filename,
     elif corpus_dir_name == 'gua_spa':
         separator = {'str': ': ', 'idx': 1}
         line_prefix = '#'
+    elif corpus_dir_name == 'grammar':
+        separator = {'str': '.,', 'idx': 1}
     process_txt_corpus(file_path, processed_dir, corpus_dir_name, 
                        separator=separator, line_prefix=line_prefix)
 
@@ -528,14 +530,18 @@ def prepare_processing_tsv_corpus(corpus_dir_path, corpus_dir_name, filename,
         text_col_name = 'source_processed'
     elif corpus_dir_name == 'americasnli':
         text_col_name = 'hypothesis'
-        sanitize_tsv_corpus(file_path)
+    elif corpus_dir_name == 'bible':
+        text_col_name = 'col1'
+        names = ['col1', 'col2']
+    elif corpus_dir_name == 'ancora':
+        text_col_name = 'col2'
+        names = ['col1', 'col2']
     elif corpus_dir_name in ['americasnlp2024', 'tatoeba']:
-        if corpus_dir_name == 'americasnlp2024':
-            sanitize_tsv_corpus(file_path)
         text_col_name = 'col3'
         names = ['col1', 'col2', 'col3']
     else:
         raise Exception(f'Unknown corpus in path {corpus_dir_path}')
+    sanitize_tsv_corpus(file_path)
     process_csv_corpus(file_path, processed_dir, corpus_dir_name, text_col_name, 
                        sep='\t', names=names)
 
@@ -576,7 +582,7 @@ def prepare_processing_jsonl_corpus(corpus_dir_path, corpus_dir_name, filename,
     process_jsonl_corpus(file_path, processed_dir, corpus_dir_name)
 
 
-def process_corpora(dir_path, processed_corpora_dir):
+def process_corpora(raw_corpora_dir_path, processed_corpora_dir, overwrite=False):
     """
     Process all supported corpus files in a directory tree.
 
@@ -591,8 +597,20 @@ def process_corpora(dir_path, processed_corpora_dir):
         None
     """
     os.makedirs(processed_corpora_dir, exist_ok=True)
-    for corpus_dir_name in os.listdir(dir_path):
-        corpus_path = os.path.join(dir_path, corpus_dir_name)
+    for corpus_dir_name in os.listdir(raw_corpora_dir_path):
+        corpus_path = os.path.join(raw_corpora_dir_path, corpus_dir_name)
+        processed_corpus_dir = os.path.join(processed_corpora_dir, corpus_dir_name)
+        corpus_report_file_path = os.path.join(processed_corpus_dir, f'{corpus_dir_name}_report.json')
+        if os.path.exists(corpus_report_file_path):
+            if not overwrite:
+                # if not overwrite and corpus report exists ignore
+                continue
+            else:
+                # if overwrite and corpus report exists delete together with
+                # the processed corpus
+                os.remove(corpus_report_file_path)
+                corpus_file_path = os.path.join(processed_corpus_dir, f'{corpus_dir_name}.jsonl')
+                os.remove(corpus_file_path)
         corpus_file_names = get_corpus_file_names(corpus_path)
         for filename in corpus_file_names:
             if filename.endswith('.csv'):
@@ -660,6 +678,8 @@ def compute_num_raw_records(raw_corpora_dir):
                     names = None
                     if corpus_dir_name in ['americasnlp2024', 'tatoeba']:
                         names = ['col1', 'col2', 'col3']
+                    elif corpus_dir_name in ['bible', 'ancora']:
+                        names = ['col1', 'col2']
                     df = read_csv_corpus(file_path, '\t', names)
                     raw_records[corpus_dir_name] += df.shape[0]
             elif filename.endswith('xml'):

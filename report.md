@@ -18,4 +18,7 @@ Publicly available corpora that contain text in Guarani.
 |[tatoeba](https://tatoeba.org/en/downloads)|:white_check_mark:| | |Creative Commons|3,367|13,269|95,040|3.941|28.227|0.939| 
 |[culturax](https://huggingface.co/datasets/uonlp/CulturaX)|:white_check_mark:| | |Open Data and Creative Commons|63|2,333|17,437|37.032|276.778|0.998| 
 |[americasnli](https://github.com/abteen/americasnli)| | | |Creative Commons|1,990|13,611|101,889|6.840|51.201|0.983| 
-| Total |  |  |  | 186,048 | 2,523,467 | 19,288,231 |  |  |  | 
+|[bible](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|22,818|386,549|2,684,120|16.941|117.632|0.990| 
+|[ancora](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|14,120|334,973|2,320,434|23.723|164.337|0.810| 
+|[grammar](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|277,842|999,398|8,343,710|3.597|30.030|0.957| 
+| Total |  |  |  | 500,828 | 4,244,387 | 32,636,495 |  |  |  | 

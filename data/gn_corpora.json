@@ -195,5 +195,44 @@
         "parallel": false,
         "synthetic": false,
         "license": "Creative Commons"
+    },
+    {
+        "name": "bible",
+        "url": "https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw",
+        "download_urls": 
+            [
+                "https://raw.githubusercontent.com/baladon-lucas-pardinas/NMT-Translation-gn-es/refs/heads/main/artifacts/data/raw/bible_gn_es.tsv"
+            ],
+        "format": "tsv",
+        "multilingual": false,
+        "parallel": true,
+        "synthetic": false,
+        "license": "Unknown"
+    },
+    {
+        "name": "ancora",
+        "url": "https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw",
+        "download_urls": 
+            [
+                "https://raw.githubusercontent.com/baladon-lucas-pardinas/NMT-Translation-gn-es/refs/heads/main/artifacts/data/raw/ancora.tsv"
+            ],
+        "format": "tsv",
+        "multilingual": false,
+        "parallel": true,
+        "synthetic": false,
+        "license": "Unknown"
+    },
+    {
+        "name": "grammar",
+        "url": "https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw",
+        "download_urls": 
+            [
+                "https://raw.githubusercontent.com/baladon-lucas-pardinas/NMT-Translation-gn-es/refs/heads/main/artifacts/data/raw/grammar.txt"
+            ],
+        "format": "txt",
+        "multilingual": false,
+        "parallel": true,
+        "synthetic": false,
+        "license": "Unknown"
     }
 ]
