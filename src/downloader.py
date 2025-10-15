@@ -35,19 +35,28 @@ def download_corpora(project_dir):
         name = corpus['name']
         urls = corpus['download_urls']
         format = corpus['format']
-        corpus_dir = os.path.join(raw_data_dir, name) 
+        corpus_dir = os.path.join(raw_data_dir, name)
+        if os.path.exists(corpus_dir):
+            # if the corpus dir exist we asumme all corpus files have been already
+            # downloaded
+            continue
         os.makedirs(corpus_dir, exist_ok=True)
         for url in urls:
-            url_file_name = '_'.join(url.split('/')[-2:])
-            corpus_file_path = os.path.join(corpus_dir, url_file_name)
-            if not os.path.exists(corpus_file_path):
-                print(f'Downloading {name} from {url}')
-                if 'huggingface.co' in url:
-                    hf_token = os.getenv('HF_ACCESS_TOKEN')
-                    if not hf_token:
-                        raise Exception('Hugging Face token not found in environment variables.')
-                if format in ['parquet', 'bin', 'zip', 'tar.gz', 'bz2']:
-                    do_download(url, corpus_file_path, 'wb', hf_token)
+            path_idx = -2
+            while True:
+                url_file_name = '_'.join(url.split('/')[path_idx:])
+                corpus_file_path = os.path.join(corpus_dir, url_file_name)
+                if not os.path.exists(corpus_file_path):
+                    break
                 else:
-                    do_download(url, corpus_file_path, 'w', hf_token)
+                    path_idx -= 1
+            print(f'Downloading {name} from {url}')
+            if 'huggingface.co' in url:
+                hf_token = os.getenv('HF_ACCESS_TOKEN')
+                if not hf_token:
+                    raise Exception('Hugging Face token not found in environment variables.')
+            if format in ['parquet', 'bin', 'zip', 'tar.gz', 'bz2']:
+                do_download(url, corpus_file_path, 'wb', hf_token)
+            else:
+                do_download(url, corpus_file_path, 'w', hf_token)
     print(f'All downloads completed, files can be found in {raw_data_dir}')

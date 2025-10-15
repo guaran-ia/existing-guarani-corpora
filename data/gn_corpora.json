@@ -220,7 +220,7 @@
         "multilingual": false,
         "parallel": true,
         "synthetic": false,
-        "license": "Unknown"
+        "license": "GNU Public License"
     },
     {
         "name": "grammar",
@@ -234,5 +234,20 @@
         "parallel": true,
         "synthetic": false,
         "license": "Unknown"
+    },
+    {
+        "name": "fineweb-2",
+        "url": "https://huggingface.co/datasets/HuggingFaceFW/fineweb-2",
+        "download_urls": 
+            [
+                "https://huggingface.co/datasets/HuggingFaceFW/fineweb-2/resolve/main/data/gug_Latn/test/000_00000.parquet",
+                "https://huggingface.co/datasets/HuggingFaceFW/fineweb-2/resolve/main/data/gug_Latn/train/000_00000.parquet",
+                "https://huggingface.co/datasets/HuggingFaceFW/fineweb-2/resolve/main/data/gug_Latn_removed/train/000_00000.parquet"
+            ],
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "Open Data Commons"
     }
 ]

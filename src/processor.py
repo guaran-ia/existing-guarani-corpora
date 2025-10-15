@@ -4,6 +4,7 @@ import pandas as pd
 import re
 import xml.etree.ElementTree as ET
 
+from urllib.parse import urlparse
 from utils import create_jsonl, word_count_spacy, word_count_split, \
     identify_language, save_to_json, sanitize_tsv_corpus
 
@@ -173,6 +174,13 @@ def get_report_dict():
     }
 
 
+def get_domain(url):
+  try:
+    return urlparse(url).netloc
+  except:
+    return None
+
+
 def read_csv_corpus(file_path, sep=',', names=None, ignore_bad_lines=True, 
                     drop_incomplete_records=True):
     """
@@ -195,6 +203,46 @@ def read_csv_corpus(file_path, sep=',', names=None, ignore_bad_lines=True,
         df = pd.read_csv(file_path, sep=sep, encoding='utf-8', names=names)
     if drop_incomplete_records:
         df = df.dropna()
+    if 'fineweb-2' in file_path and 'removed' in file_path:
+        df['domain'] = df['url'].apply(get_domain)
+        # Text in the `removed` set of fineweb-2 will be included according to 
+        # the following heuristics:
+        # 1. Text coming from Wikipedia in Guarani
+        filtered_df = pd.DataFrame()
+        filtered_df = pd.concat(
+            [
+                filtered_df,
+                df.loc[
+                    (df.domain.str.contains('gn.wikipedia.org'))&\
+                    (~df.filter_reason.str.contains('duplicated_', regex=False))&\
+                    (df.filter_reason != 'char_dup_ratio')
+                ]
+            ]
+        )
+        # 2. Text containing at least 90% of Guarani and published on `.py` domains 
+        filtered_df = pd.concat(
+            [
+                filtered_df,
+                df.loc[
+                    (df.domain.str.contains('gn.wikipedia.org'))&\
+                    (~df.filter_reason.str.contains('duplicated_', regex=False))&\
+                    (df.filter_reason != 'char_dup_ratio')
+                ]
+            ]
+        )
+        # 3. Text containing at least 90% of Guarani and published on domains 
+        # containing the word `guarani`
+        filtered_df = pd.concat(
+            [
+                filtered_df,
+                df.loc[
+                    (df.domain.str.contains('gn.wikipedia.org'))&\
+                    (~df.filter_reason.str.contains('duplicated_', regex=False))&\
+                    (df.filter_reason != 'char_dup_ratio')
+                ]
+            ]
+        )
+        df = filtered_df.copy()
     return df
 
 
@@ -471,6 +519,11 @@ def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename,
         source_col_name = 'source'
         url_col_name = 'url'
         corpus_name = 'culturax'
+    elif 'fineweb-2' in corpus_dir_name:
+        text_col_name = 'text'
+        source_col_name = ''
+        url_col_name = 'url'
+        corpus_name = 'fineweb-2'
     else:
         raise Exception(f'Unknown corpus in path {corpus_dir_path}')
     process_csv_corpus(file_path, processed_dir, corpus_name, text_col_name, 
