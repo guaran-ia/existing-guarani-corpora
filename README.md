@@ -84,6 +84,10 @@ previously accept a license of usage. In this sense, it is required that an
 autheticated HuggingFace user accepts this licenses before executing the code 
 and adds a HuggingFace Access Token to the `env` file.
 
+## Report
+
+A report with information and statistics about the processed corpora can be found [here](https://github.com/guaran-ia/existing-guarani-corpora/blob/main/report.md).
+
 ## Contributors
 
 [Jorge Saldivar](https://github.com/joausaga)
