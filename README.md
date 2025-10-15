@@ -77,7 +77,9 @@ python main.py
 
 > :information_source: Corpora published as compressed packages, like `CommonVoice`,
 > `Tatoeba`, `AmericaNLP 20202` or `Opus` should be manually decompressed moving
-> actual corpora files to the corpus root directory.
+> the actual corpora files to the corpus root directory (e.g., the files `unvalidated.tsv`, 
+> `validated.tsv`, and `reported.tsv` of `CommonVoice` should be moved to
+> the root directory of the corpus).
 
 ## Dependencies
 *   Python 3.12+
