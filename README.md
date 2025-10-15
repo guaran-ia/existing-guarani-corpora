@@ -1,15 +1,15 @@
 # Existing Guarani Corpora
 
-This repo contains the code used to explore the corpora containing Guarani text. 
-In total, 11 corpora were analyzed including: `americasnlp`, `belele`, `culturax`,
+This repo contains the code used to explore open corpora containing Guarani text. 
+In total, 19 corpora were analyzed including: `americasnlp`, `belele`, `culturax`,
 `tatoeba`, `opus`, and `jojajovai`. Multilingual and parallel corpora were examined
 processing only the Guarani text available in these datasets. The full list of 
 corpora with their respective download urls can be accessed at `data/gn_corpora.json`.
 
 ## Processing Pipeline
 
-The processing pipeline includes: i) download of raw corpora;
-ii) extraction of corpora obtained in compressed format, like `tar.gz`;
+The processing pipeline includes: i) automatic download of raw corpora;
+ii) manual extraction of corpora obtained in compressed format, like `tar.gz`;
 iii) processing of corpora in multiple formats, including `txt`, `csv`, `tsv`, `xml`, 
 and `json`; iv) transformation of the raw corpora format into a homogeneous scheme.
 
