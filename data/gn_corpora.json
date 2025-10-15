@@ -219,7 +219,7 @@
         "format": "tsv",
         "multilingual": false,
         "parallel": true,
-        "synthetic": false,
+        "synthetic": true,
         "license": "GNU Public License"
     },
     {
@@ -232,7 +232,7 @@
         "format": "txt",
         "multilingual": false,
         "parallel": true,
-        "synthetic": false,
+        "synthetic": true,
         "license": "Unknown"
     },
     {

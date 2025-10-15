@@ -8,12 +8,12 @@ Publicly available corpora that contain text in Guarani.
 |2|[Americasnlp2022](https://github.com/AmericasNLP/americasnlp2022)| |:white_check_mark:| |Creative Commons|386|1,666|11,941|4.316|30.935|0.916| 
 |3|[Americasnlp2023](https://github.com/AmericasNLP/americasnlp2023)| |:white_check_mark:| |Unknown|27,027|413,175|3,161,598|15.287|116.979|0.979| 
 |4|[Americasnlp2024](https://github.com/AmericasNLP/americasnlp2024)| |:white_check_mark:| |Unknown|109,719|1,446,800|11,053,563|13.186|100.744|0.950| 
-|5|[Ancora](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |GNU Public License|14,120|334,973|2,320,434|23.723|164.337|0.810| 
+|5|[Ancora](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:|:white_check_mark:|GNU Public License|14,120|334,973|2,320,434|23.723|164.337|0.810| 
 |6|[Belele](https://huggingface.co/datasets/facebook/2M-Belebele)|:white_check_mark:| | |Creative Commons|1,800|65,713|503,106|36.507|279.503|0.996| 
 |7|[Bible](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|22,818|386,549|2,684,120|16.941|117.632|0.990| 
 |8|[Culturax](https://huggingface.co/datasets/uonlp/CulturaX)|:white_check_mark:| | |Open Data and Creative Commons|63|2,333|17,437|37.032|276.778|0.998| 
 |9|[Fineweb-2](https://huggingface.co/datasets/HuggingFaceFW/fineweb-2)|:white_check_mark:| | |Open Data Commons|45,397|12,800,376|93,757,717|281.965|2065.284|0.935| 
-|10|[Grammar](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|277,842|999,398|8,343,710|3.597|30.030|0.957| 
+|10|[Grammar](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:|:white_check_mark:|Unknown|277,842|999,398|8,343,710|3.597|30.030|0.957| 
 |11|[Gua_Spa](https://github.com/pln-fing-udelar/gua-spa-2023)| |:white_check_mark:| |Unknown|1,500|23,855|150,185|15.903|100.123|0.729| 
 |12|[Joemo](https://huggingface.co/datasets/mmaguero/gn-emotion-recognition)| | | |MIT|1,571|10,693|78,034|6.806|49.672|0.770| 
 |13|[Joff+](https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification)| | | |MIT|2,170|15,016|110,058|6.920|50.718|0.784| 
