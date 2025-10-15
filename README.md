@@ -1,8 +1,8 @@
 # Existing Guarani Corpora
 
 This repo contains the code used to explore open corpora containing Guarani text. 
-In total, 19 corpora were analyzed including: `americasnlp`, `belele`, `culturax`,
-`tatoeba`, `opus`, and `jojajovai`. Multilingual and parallel corpora were examined
+In total, 19 corpora were analyzed, including: `americasnlp`, `belele`, `culturax`,
+`tatoeba`, `opus`, and `jojajovai`. Multilingual and parallel corpora were examined,
 processing only the Guarani text available in these datasets. The full list of 
 corpora with their respective download urls can be accessed at `data/gn_corpora.json`.
 
@@ -13,7 +13,7 @@ ii) manual extraction of corpora obtained in compressed format, like `tar.gz`;
 iii) processing of corpora in multiple formats, including `txt`, `csv`, `tsv`, `xml`, 
 and `json`; iv) transformation of the raw corpora format into a homogeneous scheme.
 
-Processed corpus are stored in `data/processed` as `jsonl` files where `json` objects have the 
+Processed corpora are stored in `data/processed` as `jsonl` files, where `json` objects have the 
 following structure:
 ```python
 {
@@ -76,7 +76,7 @@ python main.py
 ```
 
 > :information_source: Corpora published as compressed packages, like `CommonVoice`,
-> `Tatoeba`, `AmericaNLP 20202` or `Opus` should be manually decompressed moving
+> `Tatoeba`, `AmericaNLP 20202` or `Opus` should be manually decompressed, moving
 > the actual corpora files to the corpus root directory (e.g., the files `unvalidated.tsv`, 
 > `validated.tsv`, and `reported.tsv` of `CommonVoice` should be moved to
 > the root directory of the corpus).
@@ -87,9 +87,9 @@ python main.py
 
 > :warning: The [CulturaX](https://huggingface.co/datasets/uonlp/CulturaX) corpus demands to 
 previously accept a license of usage. In this sense, it is required that an 
-autheticated HuggingFace user accepts the licenses before executing the code 
+authenticated HuggingFace user accepts the licenses before executing the code 
 and adds a HuggingFace Access Token to the `env` file. Similarly, the [CommonVoice](https://datacollective.mozillafoundation.org/datasets/cmflnuzw5snt23l6000zq12ei) corpus requires an `API TOKEN` to be downloaded. 
-The token should be obtained after creating an user on from the [Mozilla Data Collective](https://datacollective.mozillafoundation.org) platform. Once obtained the token, it must be added to the `env` file. 
+The token should be obtained after creating a user on the [Mozilla Data Collective](https://datacollective.mozillafoundation.org) platform. Once obtained the token, it must be added to the `env` file. 
 
 
 ## Report
