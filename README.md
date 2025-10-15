@@ -75,14 +75,20 @@ cd src
 python main.py
 ```
 
+> :information_source: Corpora published as compressed packages, like `CommonVoice`,
+> `Tatoeba`, `AmericaNLP 20202` or `Opus` should be manually decompressed moving
+> actual corpora files to the corpus root directory.
+
 ## Dependencies
 *   Python 3.12+
 *   [Guarania language identifier](https://github.com/guaran-ia/corpus/tree/main/src/pipeline/language_identifier)
 
-> The corpus [CulturaX](https://huggingface.co/datasets/uonlp/CulturaX) demands to 
+> :warning: The [CulturaX](https://huggingface.co/datasets/uonlp/CulturaX) corpus demands to 
 previously accept a license of usage. In this sense, it is required that an 
-autheticated HuggingFace user accepts this licenses before executing the code 
-and adds a HuggingFace Access Token to the `env` file.
+autheticated HuggingFace user accepts the licenses before executing the code 
+and adds a HuggingFace Access Token to the `env` file. Similarly, the [CommonVoice](https://datacollective.mozillafoundation.org/datasets/cmflnuzw5snt23l6000zq12ei) corpus requires an `API TOKEN` to be downloaded. 
+The token should be obtained after creating an user on from the [Mozilla Data Collective](https://datacollective.mozillafoundation.org) platform. Once obtained the token, it must be added to the `env` file. 
+
 
 ## Report
 
