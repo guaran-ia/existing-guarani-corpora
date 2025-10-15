@@ -11,15 +11,16 @@ Publicly available corpora that contain text in Guarani.
 |5|[Ancora](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:|:white_check_mark:|GNU Public License|14,120|334,973|2,320,434|23.723|164.337|0.810| 
 |6|[Belele](https://huggingface.co/datasets/facebook/2M-Belebele)|:white_check_mark:| | |Creative Commons|1,800|65,713|503,106|36.507|279.503|0.996| 
 |7|[Bible](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|22,818|386,549|2,684,120|16.941|117.632|0.990| 
-|8|[Culturax](https://huggingface.co/datasets/uonlp/CulturaX)|:white_check_mark:| | |Open Data and Creative Commons|63|2,333|17,437|37.032|276.778|0.998| 
-|9|[Fineweb-2](https://huggingface.co/datasets/HuggingFaceFW/fineweb-2)|:white_check_mark:| | |Open Data Commons|45,397|12,800,376|93,757,717|281.965|2065.284|0.935| 
-|10|[Grammar](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:|:white_check_mark:|Unknown|277,842|999,398|8,343,710|3.597|30.030|0.957| 
-|11|[Gua_Spa](https://github.com/pln-fing-udelar/gua-spa-2023)| |:white_check_mark:| |Unknown|1,500|23,855|150,185|15.903|100.123|0.729| 
-|12|[Joemo](https://huggingface.co/datasets/mmaguero/gn-emotion-recognition)| | | |MIT|1,571|10,693|78,034|6.806|49.672|0.770| 
-|13|[Joff+](https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification)| | | |MIT|2,170|15,016|110,058|6.920|50.718|0.784| 
-|14|[Jofun](https://huggingface.co/datasets/mmaguero/gn-humor-detection)| | | |MIT|1,842|12,958|95,196|7.035|51.681|0.791| 
-|15|[Jojajovai](https://github.com/pln-fing-udelar/jojajovai)| |:white_check_mark:| |MIT|30,855|456,446|3,517,466|14.793|114.000|0.960| 
-|16|[Josa](https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis)| | | |MIT|3,491|47,305|388,330|13.551|111.237|0.814| 
-|17|[Opus](https://opus.nlpl.eu/GNOME/es&gn/v1/GNOME)|:white_check_mark:| | |GNU General Public License|267|627|4,388|2.348|16.434|0.340| 
-|18|[Tatoeba](https://tatoeba.org/en/downloads)|:white_check_mark:| | |Creative Commons|3,367|13,269|95,040|3.941|28.227|0.939| 
-| -- | Total | -- | -- | -- | -- | 546,225 | 17,044,763 | 126,394,212 | -- | -- | -- |  
+|8|[Commonvoice](https://datacollective.mozillafoundation.org/datasets/cmflnuzw5snt23l6000zq12ei)| | | |Creative Commons|6,154|26,352|196,386|4.282|31.912|0.956| 
+|9|[Culturax](https://huggingface.co/datasets/uonlp/CulturaX)|:white_check_mark:| | |Open Data and Creative Commons|63|2,333|17,437|37.032|276.778|0.998| 
+|10|[Fineweb-2](https://huggingface.co/datasets/HuggingFaceFW/fineweb-2)|:white_check_mark:| | |Open Data Commons|45,397|12,800,376|93,757,717|281.965|2065.284|0.935| 
+|11|[Grammar](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:|:white_check_mark:|Unknown|277,842|999,398|8,343,710|3.597|30.030|0.957| 
+|12|[Gua_Spa](https://github.com/pln-fing-udelar/gua-spa-2023)| |:white_check_mark:| |Unknown|1,500|23,855|150,185|15.903|100.123|0.729| 
+|13|[Joemo](https://huggingface.co/datasets/mmaguero/gn-emotion-recognition)| | | |MIT|1,571|10,693|78,034|6.806|49.672|0.770| 
+|14|[Joff+](https://huggingface.co/datasets/mmaguero/gn-offensive-language-identification)| | | |MIT|2,170|15,016|110,058|6.920|50.718|0.784| 
+|15|[Jofun](https://huggingface.co/datasets/mmaguero/gn-humor-detection)| | | |MIT|1,842|12,958|95,196|7.035|51.681|0.791| 
+|16|[Jojajovai](https://github.com/pln-fing-udelar/jojajovai)| |:white_check_mark:| |MIT|30,855|456,446|3,517,466|14.793|114.000|0.960| 
+|17|[Josa](https://huggingface.co/datasets/mmaguero/gn-jopara-sentiment-analysis)| | | |MIT|3,491|47,305|388,330|13.551|111.237|0.814| 
+|18|[Opus](https://opus.nlpl.eu/GNOME/es&gn/v1/GNOME)|:white_check_mark:| | |GNU General Public License|267|627|4,388|2.348|16.434|0.340| 
+|19|[Tatoeba](https://tatoeba.org/en/downloads)|:white_check_mark:| | |Creative Commons|3,367|13,269|95,040|3.941|28.227|0.939| 
+| -- | Total | -- | -- | -- | -- | 552,379 | 17,071,115 | 126,590,598 | -- | -- | -- |  

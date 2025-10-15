@@ -249,5 +249,18 @@
         "parallel": false,
         "synthetic": false,
         "license": "Open Data Commons"
+    },
+    {
+        "name": "commonvoice",
+        "url": "https://datacollective.mozillafoundation.org/datasets/cmflnuzw5snt23l6000zq12ei",
+        "download_urls": 
+            [
+                "https://datacollective.mozillafoundation.org/api/datasets/cmflnuzw5snt23l6000zq12ei/download"
+            ],
+        "format": "tar.gz",
+        "multilingual": false,
+        "parallel": false,
+        "synthetic": false,
+        "license": "Creative Commons"
     }
 ]

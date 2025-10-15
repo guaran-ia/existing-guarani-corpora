@@ -2,6 +2,7 @@ import json
 import os
 import requests
 
+from datacollective import DataCollective
 from dotenv import load_dotenv
 
 
@@ -51,12 +52,21 @@ def download_corpora(project_dir):
                 else:
                     path_idx -= 1
             print(f'Downloading {name} from {url}')
-            if 'huggingface.co' in url:
-                hf_token = os.getenv('HF_ACCESS_TOKEN')
-                if not hf_token:
-                    raise Exception('Hugging Face token not found in environment variables.')
-            if format in ['parquet', 'bin', 'zip', 'tar.gz', 'bz2']:
-                do_download(url, corpus_file_path, 'wb', hf_token)
+            if 'datacollective.mozillafoundation' in url:
+                data_collective_api_key = os.getenv('MDC_API_KEY')
+                if not data_collective_api_key:
+                    raise Exception('Data Collective API key not found in environment variables.')
+                dataset_id = url.split('/')[-2]
+                mdc_client = DataCollective()
+                mdc_client.get_dataset(dataset=dataset_id, download_path=corpus_file_path)
             else:
-                do_download(url, corpus_file_path, 'w', hf_token)
+                if 'huggingface.co' in url:
+                    hf_token = os.getenv('HF_ACCESS_TOKEN')
+                    if not hf_token:
+                        raise Exception('Hugging Face token not found in environment variables.')
+                
+                if format in ['parquet', 'bin', 'zip', 'tar.gz', 'bz2']:
+                    do_download(url, corpus_file_path, 'wb', hf_token)
+                else:
+                    do_download(url, corpus_file_path, 'w', hf_token)
     print(f'All downloads completed, files can be found in {raw_data_dir}')

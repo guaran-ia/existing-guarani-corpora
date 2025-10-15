@@ -142,13 +142,14 @@ def save_processing(output_dir_path, corpus_name, data, writing_mode, report_dic
     Returns:
         None
     """
-    output_dir_path = os.path.join(output_dir_path, corpus_name)
-    os.makedirs(output_dir_path, exist_ok=True)
-    output_file_path = os.path.join(output_dir_path, f'{corpus_name}.jsonl')
-    create_jsonl(data, output_file_path, writing_mode)
-    report_file_path = os.path.join(output_dir_path, f'{corpus_name}_report.json')
-    save_report(report_dict, report_file_path)
-    print('\n')
+    if data and report_dict:
+        output_dir_path = os.path.join(output_dir_path, corpus_name)
+        os.makedirs(output_dir_path, exist_ok=True)
+        output_file_path = os.path.join(output_dir_path, f'{corpus_name}.jsonl')
+        create_jsonl(data, output_file_path, writing_mode)
+        report_file_path = os.path.join(output_dir_path, f'{corpus_name}_report.json')
+        save_report(report_dict, report_file_path)
+        print('\n')
 
 
 def get_report_dict():
@@ -243,6 +244,18 @@ def read_csv_corpus(file_path, sep=',', names=None, ignore_bad_lines=True,
             ]
         )
         df = filtered_df.copy()
+    if 'commonvoice' in file_path:
+        if not 'reported' in file_path:
+            reported_file_path = os.path.join(os.path.dirname(file_path), 'reported.tsv')
+            reported_sentences_df = pd.read_csv(reported_file_path, sep='\t')
+            df = pd.read_csv(file_path, sep='\t')
+            # get rid off of reported sentences
+            df = df.loc[~df.sentence_id.isin(reported_sentences_df.sentence_id.unique())]
+        else:
+            # return an empty if we're working with reported.tsv, which contains
+            # reports of bad quality sentences
+            df = pd.DataFrame()
+        
     return df
 
 
@@ -272,33 +285,34 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
     Returns:
         None
     """
-    print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
     df = read_csv_corpus(file_path, sep, names)
-    report_dict = get_report_dict()
-    corpus_file_name = file_path.split('/')[-1]
-    data = []
-    for _, row in df.iterrows():
-        text = row[text_col_name]
-        if isinstance(text, str):
-            source = row[source_col_name] if source_col_name in row else 'unknown'
-            url = row[url_col_name] if url_col_name in row else 'unknown'
-            text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
-                process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
-            data.append(text_dict)
-            report_dict['num_docs'] += 1
-            report_dict['num_words_split'] += num_words_split
-            report_dict['num_words_punct_spacy'] += num_words_punct_spacy
-            report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
-            report_dict['num_chars'] += len(text)
-            report_dict['sum_lang_score'] += lang_score
-        else:
-            print(f'Text {text} not an instance of string, excluding...')
-    if corpus_name == 'americasnli':
-        text_collection = df['premise'].unique().tolist()
-        data.extend(process_text_collection(text_collection, report_dict, corpus_name,
-                                            corpus_file_name, lang_code, lang_script))
-    print(f'Finished processing {corpus_file_name}. From {df.shape[0]} lines, {report_dict["num_docs"]} were included')
-    save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
+    if df.shape[0] > 0:
+        print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
+        report_dict = get_report_dict()
+        corpus_file_name = file_path.split('/')[-1]
+        data = []
+        for _, row in df.iterrows():
+            text = row[text_col_name]
+            if isinstance(text, str):
+                source = row[source_col_name] if source_col_name in row else 'unknown'
+                url = row[url_col_name] if url_col_name in row else 'unknown'
+                text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
+                    process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
+                data.append(text_dict)
+                report_dict['num_docs'] += 1
+                report_dict['num_words_split'] += num_words_split
+                report_dict['num_words_punct_spacy'] += num_words_punct_spacy
+                report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
+                report_dict['num_chars'] += len(text)
+                report_dict['sum_lang_score'] += lang_score
+            else:
+                print(f'Text {text} not an instance of string, excluding...')
+        if corpus_name == 'americasnli':
+            text_collection = df['premise'].unique().tolist()
+            data.extend(process_text_collection(text_collection, report_dict, corpus_name,
+                                                corpus_file_name, lang_code, lang_script))
+        print(f'Finished processing {corpus_file_name}. From {df.shape[0]} lines, {report_dict["num_docs"]} were included')
+        save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
 
 
 def read_txt_corpus(file_path):
@@ -592,6 +606,8 @@ def prepare_processing_tsv_corpus(corpus_dir_path, corpus_dir_name, filename,
     elif corpus_dir_name in ['americasnlp2024', 'tatoeba']:
         text_col_name = 'col3'
         names = ['col1', 'col2', 'col3']
+    elif corpus_dir_name == 'commonvoice':
+        text_col_name = 'sentence'
     else:
         raise Exception(f'Unknown corpus in path {corpus_dir_path}')
     sanitize_tsv_corpus(file_path)
