@@ -28,6 +28,7 @@ def download_corpora(project_dir):
     load_dotenv(os.path.join(project_dir, 'src', '.env'))
     data_dir = os.path.join(project_dir, 'data')
     raw_data_dir = os.path.join(data_dir, 'raw')
+    processed_data_dir = os.path.join(data_dir, 'processed')
     os.makedirs(raw_data_dir, exist_ok=True)
     with open(os.path.join(data_dir, 'gn_corpora.json'), 'r') as f:
         gn_corpora = json.load(f)
@@ -37,13 +38,18 @@ def download_corpora(project_dir):
         urls = corpus['download_urls']
         format = corpus['format']
         corpus_dir = os.path.join(raw_data_dir, name)
-        if os.path.exists(corpus_dir):
+        processed_dir = os.path.join(processed_data_dir, name)
+        if os.path.exists(processed_dir):
             # if the corpus dir exist we asumme all corpus files have been already
             # downloaded
             continue
         os.makedirs(corpus_dir, exist_ok=True)
         for url in urls:
             path_idx = -2
+
+            if "opus-all" in name:
+                path_idx = -4
+
             while True:
                 url_file_name = '_'.join(url.split('/')[path_idx:])
                 corpus_file_path = os.path.join(corpus_dir, url_file_name)
@@ -60,12 +66,12 @@ def download_corpora(project_dir):
                 mdc_client = DataCollective()
                 mdc_client.get_dataset(dataset=dataset_id, download_path=corpus_file_path)
             else:
-                if 'huggingface.co' in url:
+                if 'huggingface.co' in url and name in ['culturax']:
                     hf_token = os.getenv('HF_ACCESS_TOKEN')
                     if not hf_token:
                         raise Exception('Hugging Face token not found in environment variables.')
                 
-                if format in ['parquet', 'bin', 'zip', 'tar.gz', 'bz2']:
+                if format in ['parquet', 'bin', 'zip', 'tar.gz', 'bz2', 'json', 'arrow', 'txt.gz']:
                     do_download(url, corpus_file_path, 'wb', hf_token)
                 else:
                     do_download(url, corpus_file_path, 'w', hf_token)
