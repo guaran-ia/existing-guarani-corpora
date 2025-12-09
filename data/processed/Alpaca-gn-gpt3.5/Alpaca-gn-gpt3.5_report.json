@@ -1,0 +1,13 @@
+{
+    "num_docs": 52002,
+    "num_words_split": 2685520,
+    "num_words_punct_spacy": 3240523,
+    "num_words_no_punct_spacy": 2729772,
+    "num_chars": 19785216,
+    "sum_lang_score": 51574.87653442845,
+    "avg_words_split": 51.64262912964886,
+    "avg_words_punct_spacy": 62.31535325564401,
+    "avg_words_no_punct_spacy": 52.49359640013846,
+    "avg_chars": 380.470289604246,
+    "avg_language_score": 0.9917864031081198
+}

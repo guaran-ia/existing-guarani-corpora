@@ -285,14 +285,32 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
     Returns:
         None
     """
-    df = read_csv_corpus(file_path, sep, names)
+    if corpus_name in ('Alpaca-gn-gpt4','Alpaca-gn-gpt3.5','gn-multi-affective-alpaca','mala-monolingual-split'):
+        df = read_csv_corpus(file_path, sep, names, drop_incomplete_records=False)
+    else:
+        df = read_csv_corpus(file_path, sep, names)
+
     if df.shape[0] > 0:
+
         print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
         report_dict = get_report_dict()
         corpus_file_name = file_path.split('/')[-1]
         data = []
+        contador = 0
         for _, row in df.iterrows():
-            text = row[text_col_name]
+            if corpus_name in ('Alpaca-gn-gpt4','Alpaca-gn-gpt3.5','gn-multi-affective-alpaca'):
+                parts = [
+                    str(row["instruction"]),
+                    str(row["input"]),
+                    str(row["output"])
+                ]
+                text = " ".join(parts)
+                print(text)
+
+            else:
+                text = row[text_col_name]
+                print(text)
+
             if isinstance(text, str):
                 source = row[source_col_name] if source_col_name in row else 'unknown'
                 url = row[url_col_name] if url_col_name in row else 'unknown'
@@ -538,6 +556,37 @@ def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename,
         source_col_name = ''
         url_col_name = 'url'
         corpus_name = 'fineweb-2'
+    elif 'glot500' in corpus_dir_name:
+        text_col_name = 'text'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'glot500'
+    elif 'Alpaca-gn-gpt4' in corpus_dir_name:
+        text_col_name = 'instruction'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'Alpaca-gn-gpt4'
+    elif 'Alpaca-gn-gpt3.5' in corpus_dir_name:
+        text_col_name = 'instruction'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'Alpaca-gn-gpt3.5'
+    elif 'FinePDF' in corpus_dir_name:
+        text_col_name = 'text'
+        source_col_name = ''
+        url_col_name = 'url'
+        corpus_name = 'FinePDF'
+    elif 'gn-multi-affective-alpaca' in corpus_dir_name:
+        text_col_name = 'instruction'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'gn-multi-affective-alpaca'
+    elif 'mala-monolingual-split' in corpus_dir_name:
+        print("ADASDSAD")
+        text_col_name = 'text'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'mala-monolingual-split'
     else:
         raise Exception(f'Unknown corpus in path {corpus_dir_path}')
     process_csv_corpus(file_path, processed_dir, corpus_name, text_col_name, 

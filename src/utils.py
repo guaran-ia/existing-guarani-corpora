@@ -8,6 +8,9 @@ from corpus.src.pipeline.language_identifier.language_identifier import Language
 
 # set up spacy word segmentator
 word_seg = spacy.blank("xx")
+# allow HUGE documents (FinePDF, long PDFs, etc.)
+word_seg.max_length = 10_000_000
+
 # set up guarani language identifier
 identifier = LanguageIdentifier(glotlid=True, fasttext=True, openlid=True)
 # define Guarani iso-6393 code
