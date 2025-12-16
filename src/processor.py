@@ -60,7 +60,6 @@ def process_text(text, corpus_name, corpus_file_name, source, url, lang_code, la
             - num_words_no_punct_spacy (int)
             - lang_score (float)
     """
-    
     num_words_split = word_count_split(text)
     num_words_punct_spacy = word_count_spacy(text, include_punct=True)
     num_words_no_punct_spacy = word_count_spacy(text, include_punct=False)
@@ -293,39 +292,30 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
         report_dict = get_report_dict()
         corpus_file_name = file_path.split('/')[-1]
         data = []
-
         if corpus_name == 'multi-wiki-qa':
             for _, row in df.iterrows():
                 context, question, answer = row[text_col_name[0]], row[text_col_name[1]], row[text_col_name[2]]
-                
                 text = ""
-
                 if isinstance(context, str):
                     text += context
-
                 if isinstance(question, str):
                     text += f"\n\n{question}"
-
                 if isinstance(answer, str):
                     try:
                         answer_dict = ast.literal_eval(answer)
                         text += f"\n\n{' '.join(answer_dict["text"])}"
                     except Exception:
-                        pass
-                
+                        pass                
                 if not text:
                     continue
-
                 source = row[source_col_name] if source_col_name in row else 'unknown'
                 url = row[url_col_name] if url_col_name in row else 'unknown'
                 text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
-                    process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
-                
+                    process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)                
                 if text_dict['language'] != lang_code:
                     continue
                 if lang_score < 0.70:
                     continue
-
                 data.append(text_dict)
                 report_dict['num_docs'] += 1
                 report_dict['num_words_split'] += num_words_split
@@ -335,34 +325,26 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
                 report_dict['sum_lang_score'] += lang_score
         elif corpus_name == 'moscar':
             for index, row in df.iterrows():
-
                 try:
                     text_list = ast.literal_eval(row[text_col_name].replace('}\n', '},').replace('...\n ', ''))
                     metadata_list = ast.literal_eval(row[url_col_name])
                 except Exception as e:
                     print(f"Failed to convert line {index} from string: {e}")
                     continue
-
                 if isinstance(text_list, list):
                     text = '\n'.join([t['text'] for t in text_list])
                 else:
                     continue
-
                 if isinstance(metadata_list, dict):
                     url = metadata_list.get('url', 'unknown')
-
                 source = 'unknown'
-
                 text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
                     process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
-
                 if text_dict['language'] != lang_code:
                     continue
                 if lang_score < 0.70:
                     continue
-
                 data.append(text_dict)
-
                 report_dict['num_docs'] += 1
                 report_dict['num_words_split'] += num_words_split
                 report_dict['num_words_punct_spacy'] += num_words_punct_spacy
@@ -376,13 +358,11 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
                     source = row[source_col_name] if source_col_name in row else 'unknown'
                     url = row[url_col_name] if url_col_name in row else 'unknown'
                     text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
-                        process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
-                    
+                        process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)                    
                     if text_dict['language'] != lang_code:
                         continue
                     if lang_score < 0.70:
                         continue
-
                     data.append(text_dict)
                     report_dict['num_docs'] += 1
                     report_dict['num_words_split'] += num_words_split
@@ -427,10 +407,8 @@ def process_text_collection(content_collection, report_dict, corpus_name,
                 continue
             if separator:
                 text = text.split(separator['str'])[separator['idx']]
-            
             source = 'unknown'
             url = 'unknown'
-
             if 'opus-all' in corpus_name:
                 rgx = r"OPUS-(.*)_mono_gn.txt"
                 res = re.search(rgx, corpus_file_name)
@@ -438,16 +416,13 @@ def process_text_collection(content_collection, report_dict, corpus_name,
                     source = res.group(1)
                 except:
                     pass
-
             text_dict, num_words_split, num_words_punct_spacy, \
                 num_words_no_punct_spacy, lang_score = \
                 process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
-
             if text_dict['language'] != lang_code:
                 continue
             if lang_score < 0.70:
                 continue
-
             data.append(text_dict)
             report_dict['num_docs'] += 1
             report_dict['num_words_split'] += num_words_split
@@ -585,12 +560,10 @@ def process_jsonl_corpus(file_path, output_dir_path, corpus_name, lang_code='grn
             if isinstance(text, str):
                 text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
                     process_text(text, corpus_name, corpus_file_name, 'unknown', 'unknown', lang_code, lang_script)
-                
                 if text_dict['language'] != lang_code:
                     continue
                 if lang_score < 0.70:
                     continue
-
                 data.append(text_dict)
                 report_dict['num_docs'] += 1
                 report_dict['num_words_split'] += num_words_split
@@ -629,35 +602,23 @@ def process_json_corpus(file_path, output_dir_path, corpus_name, lang_code='grn'
     print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
     data = []
     report_dict = get_report_dict()
-
     f_data = read_json_corpus(file_path)
-
     corpus_file_name = file_path.split('/')[-1]
-
     if corpus_name == "apollomoedataset":
-
-        print(f"Processing {corpus_name}")
-
         for line in f_data:
             lang = line['language']
-
             if lang != 'gn':
                 continue
-            
             source = line['source']
             conversations = line['conversations']
             text = ""
-
             for conv in conversations:
                 text += conv['value']
-
             text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = process_text(text, corpus_name, corpus_file_name, source, 'unknown', lang_code, lang_script)
-            
             if text_dict['language'] != lang_code:
                 continue
             if lang_score < 0.70:
                 continue
-
             data.append(text_dict)
             report_dict['num_docs'] += 1
             report_dict['num_words_split'] += num_words_split
@@ -668,30 +629,22 @@ def process_json_corpus(file_path, output_dir_path, corpus_name, lang_code='grn'
     elif corpus_name == "apollomoebench":
         for line in f_data:
             lang = line['language']
-
             if lang != 'gn':
                 continue
-
             source = line['source']
-
             if isinstance(line['question'], str):
                 text = line['question']
             else:
                 continue
-
             if isinstance(line['options'], str):
                 text += '\n\n' + line['options']
-
             if isinstance(line['answer'], str):
                 text += '\n\n' + line['answer']
-
             text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = process_text(text, corpus_name, corpus_file_name, source, 'unknown', lang_code, lang_script)
-
             if text_dict['language'] != lang_code:
                 continue
             if lang_score < 0.70:
                 continue
-
             data.append(text_dict)
             report_dict['num_docs'] += 1
             report_dict['num_words_split'] += num_words_split
@@ -699,7 +652,6 @@ def process_json_corpus(file_path, output_dir_path, corpus_name, lang_code='grn'
             report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
             report_dict['num_chars'] += len(text)
             report_dict['sum_lang_score'] += lang_score
-
     save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
 
 
@@ -1034,10 +986,8 @@ def check_processed_corpora(processed_corpora_dir, raw_records):
         for filename in corpus_file_names:
             file_path = os.path.join(corpus_path, filename)
             raw_corpus_num_records = raw_records.get(corpus_dir_name, None)
-
             if not raw_corpus_num_records:
                 continue
-
             if filename.endswith('json'):
                 with open(file_path, 'r') as f:
                     processed_corpus_report = json.load(f)

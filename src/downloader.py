@@ -1,7 +1,6 @@
 import json
 import os
 import requests
-
 from datacollective import DataCollective
 from dotenv import load_dotenv
 
@@ -46,10 +45,8 @@ def download_corpora(project_dir):
         os.makedirs(corpus_dir, exist_ok=True)
         for url in urls:
             path_idx = -2
-
             if "opus-all" in name:
                 path_idx = -4
-
             while True:
                 url_file_name = '_'.join(url.split('/')[path_idx:])
                 corpus_file_path = os.path.join(corpus_dir, url_file_name)
