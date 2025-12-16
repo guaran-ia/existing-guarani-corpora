@@ -342,5 +342,30 @@
         "parallel": false,
         "synthetic": false,
         "license": "odc-by"
+    },
+    {
+        "name": "smolsent__en_gn",
+        "url": "https://huggingface.co/datasets/google/smol/viewer/smolsent__en_gn",
+        "download_urls": [
+            "https://huggingface.co/datasets/google/smol/resolve/main/smolsent/en_gn.jsonl"
+        ],
+        "format": "jsonl",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "CC BY 4.0"
+    },
+    {
+        "name": "cc100_gn",
+        "url": "https://huggingface.co/datasets/statmt/cc100/tree/refs%2Fconvert%2Fparquet/gn",
+        "download_urls": [
+            "https://huggingface.co/datasets/statmt/cc100/resolve/refs%2Fconvert%2Fparquet/gn/train/0000.parquet"
+        ],
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "unknown"
     }
 ]
+
