@@ -16,7 +16,7 @@ if __name__ == '__main__':
     # process raw corpora
     process_corpora(corpora_dir, processed_corpora_dir)
     # verify processed corpora
-    # verify_processed_corpora(corpora_dir, processed_corpora_dir)
+    verify_processed_corpora(corpora_dir, processed_corpora_dir)
     # create report
     create_report(project_dir)
     
