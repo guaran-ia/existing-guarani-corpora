@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 from utils import create_jsonl, word_count_spacy, word_count_split, \
     identify_language, save_to_json, sanitize_tsv_corpus
 
+MIN_LANG_SCORE = 0.70
 
 def process_parquet_files(dir_path):
     """
@@ -314,7 +315,7 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
                     process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)                
                 if text_dict['language'] != lang_code:
                     continue
-                if lang_score < 0.70:
+                if lang_score < MIN_LANG_SCORE:
                     continue
                 data.append(text_dict)
                 report_dict['num_docs'] += 1
@@ -342,7 +343,7 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
                     process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
                 if text_dict['language'] != lang_code:
                     continue
-                if lang_score < 0.70:
+                if lang_score < MIN_LANG_SCORE:
                     continue
                 data.append(text_dict)
                 report_dict['num_docs'] += 1
@@ -361,7 +362,7 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
                         process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)                    
                     if text_dict['language'] != lang_code:
                         continue
-                    if lang_score < 0.70:
+                    if lang_score < MIN_LANG_SCORE:
                         continue
                     data.append(text_dict)
                     report_dict['num_docs'] += 1
@@ -421,7 +422,7 @@ def process_text_collection(content_collection, report_dict, corpus_name,
                 process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
             if text_dict['language'] != lang_code:
                 continue
-            if lang_score < 0.70:
+            if lang_score < MIN_LANG_SCORE:
                 continue
             data.append(text_dict)
             report_dict['num_docs'] += 1
@@ -562,7 +563,7 @@ def process_jsonl_corpus(file_path, output_dir_path, corpus_name, lang_code='grn
                     process_text(text, corpus_name, corpus_file_name, 'unknown', 'unknown', lang_code, lang_script)
                 if text_dict['language'] != lang_code:
                     continue
-                if lang_score < 0.70:
+                if lang_score < MIN_LANG_SCORE:
                     continue
                 data.append(text_dict)
                 report_dict['num_docs'] += 1
@@ -604,34 +605,18 @@ def process_json_corpus(file_path, output_dir_path, corpus_name, lang_code='grn'
     report_dict = get_report_dict()
     f_data = read_json_corpus(file_path)
     corpus_file_name = file_path.split('/')[-1]
-    if corpus_name == "apollomoedataset":
-        for line in f_data:
-            lang = line['language']
-            if lang != 'gn':
-                continue
-            source = line['source']
+
+    for line in f_data:
+        lang = line['language']
+        if lang != 'gn':
+            continue
+        source = line['source']
+        if corpus_name == "apollomoedataset":
             conversations = line['conversations']
             text = ""
             for conv in conversations:
                 text += conv['value']
-            text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = process_text(text, corpus_name, corpus_file_name, source, 'unknown', lang_code, lang_script)
-            if text_dict['language'] != lang_code:
-                continue
-            if lang_score < 0.70:
-                continue
-            data.append(text_dict)
-            report_dict['num_docs'] += 1
-            report_dict['num_words_split'] += num_words_split
-            report_dict['num_words_punct_spacy'] += num_words_punct_spacy
-            report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
-            report_dict['num_chars'] += len(text)
-            report_dict['sum_lang_score'] += lang_score
-    elif corpus_name == "apollomoebench":
-        for line in f_data:
-            lang = line['language']
-            if lang != 'gn':
-                continue
-            source = line['source']
+        elif corpus_name == "apollomoebench":
             if isinstance(line['question'], str):
                 text = line['question']
             else:
@@ -640,18 +625,18 @@ def process_json_corpus(file_path, output_dir_path, corpus_name, lang_code='grn'
                 text += '\n\n' + line['options']
             if isinstance(line['answer'], str):
                 text += '\n\n' + line['answer']
-            text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = process_text(text, corpus_name, corpus_file_name, source, 'unknown', lang_code, lang_script)
-            if text_dict['language'] != lang_code:
-                continue
-            if lang_score < 0.70:
-                continue
-            data.append(text_dict)
-            report_dict['num_docs'] += 1
-            report_dict['num_words_split'] += num_words_split
-            report_dict['num_words_punct_spacy'] += num_words_punct_spacy
-            report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
-            report_dict['num_chars'] += len(text)
-            report_dict['sum_lang_score'] += lang_score
+        text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = process_text(text, corpus_name, corpus_file_name, source, 'unknown', lang_code, lang_script)
+        if text_dict['language'] != lang_code:
+            continue
+        if lang_score < MIN_LANG_SCORE:
+            continue
+        data.append(text_dict)
+        report_dict['num_docs'] += 1
+        report_dict['num_words_split'] += num_words_split
+        report_dict['num_words_punct_spacy'] += num_words_punct_spacy
+        report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
+        report_dict['num_chars'] += len(text)
+        report_dict['sum_lang_score'] += lang_score
     save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
 
 
@@ -877,7 +862,6 @@ def process_corpora(raw_corpora_dir_path, processed_corpora_dir, overwrite=False
         corpus_file_names = get_corpus_file_names(corpus_path)
         for filename in corpus_file_names:
             if filename.endswith('.csv'):
-                print(f"Processing csv file {filename}")
                 prepare_processing_csv_corpus(
                     corpus_path, corpus_dir_name, filename, processed_corpora_dir
                 )
