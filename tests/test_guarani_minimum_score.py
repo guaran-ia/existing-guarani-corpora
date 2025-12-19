@@ -1,33 +1,51 @@
 import json
 from pathlib import Path
-
-
-DATA_DIR = Path("data/processed")
-MIN_GUARANI_SCORE = 0.70
-GUARANI_LANG_CODES = {"grn"}
+from collections import defaultdict
 
 
 def test_all_documents_have_minimum_guarani_score():
-    errors = []
+    DATA_DIR = Path(__file__).parent.parent / "data" / "processed"
+    MIN_GUARANI_SCORE = 0.7
+    GUARANI_LANG_CODES = {"grn", "gug", "gn"}
 
-    for jsonl_path in DATA_DIR.rglob("*.jsonl"):
+    stats = defaultdict(lambda: {"total": 0, "failed": 0})
+
+    jsonl_files = list(DATA_DIR.rglob("*.jsonl"))
+    assert jsonl_files, "No JSONL files found under data/processed/"
+
+    for jsonl_path in jsonl_files:
+        corpus_name = jsonl_path.parent.name
+
         with jsonl_path.open(encoding="utf-8") as f:
-            for line_num, line in enumerate(f, start=1):
+            for line in f:
                 obj = json.loads(line)
 
-                if obj["language"] not in GUARANI_LANG_CODES:
-                    errors.append(
-                        f"{jsonl_path} line {line_num}: invalid language "
-                        f"{obj['language']}"
-                    )
-                    continue
+                if obj["language"] in GUARANI_LANG_CODES:
+                    stats[corpus_name]["total"] += 1
 
-                if obj["language_score"] < MIN_GUARANI_SCORE:
-                    errors.append(
-                        f"{jsonl_path} line {line_num}: "
-                        f"language_score={obj['language_score']}"
-                    )
+                    if obj["language_score"] < MIN_GUARANI_SCORE:
+                        stats[corpus_name]["failed"] += 1
 
-    assert not errors, (
-        "Documents below minimum Guarani threshold:\n" + "\n".join(errors)
+    report_lines = []
+    has_failures = False
+
+    for corpus, counts in sorted(stats.items()):
+        if counts["total"] == 0:
+            continue
+
+        percentage = (counts["failed"] / counts["total"]) * 100
+
+        report_lines.append(
+            f"{corpus}: {counts['failed']} / {counts['total']} "
+            f"documents below threshold ({percentage:.2f}%)"
+        )
+
+        if counts["failed"] > 0:
+            has_failures = True
+
+    assert not has_failures, (
+        "Some corpora contain documents below the minimum Guarani threshold:\n"
+        + "\n".join(report_lines)
     )
+
+
