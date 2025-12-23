@@ -14,7 +14,7 @@ Publicly available corpora that contain text in Guarani.
 |8|[Ancora](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:|:white_check_mark:|GNU Public License|14,120|334,973|2,320,434|23.723|164.337|0.810| 
 |9|[Belele](https://huggingface.co/datasets/facebook/2M-Belebele)|:white_check_mark:| | |Creative Commons|1,800|65,713|503,106|36.507|279.503|0.996| 
 |10|[Bible](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|22,818|386,549|2,684,120|16.941|117.632|0.990| 
-|11|[Cc100_Gn](https://huggingface.co/datasets/statmt/cc100/tree/refs%2Fconvert%2Fparquet/gn)|:white_check_mark:| | |unknown|72,285|967,653|7,322,699|13.387|101.303|0.776| 
+|11|[Cc100_Gn](https://huggingface.co/datasets/statmt/cc100/tree/refs%2Fconvert%2Fparquet/gn)|:white_check_mark:| | |unknown|57,041|967,653|7,307,455|16.964|128.109|0.983| 
 |12|[Commonvoice](https://datacollective.mozillafoundation.org/datasets/cmflnuzw5snt23l6000zq12ei)| | | |Creative Commons|6,154|26,352|196,386|4.282|31.912|0.956| 
 |13|[Culturax](https://huggingface.co/datasets/uonlp/CulturaX)|:white_check_mark:| | |Open Data and Creative Commons|63|2,333|17,437|37.032|276.778|0.998| 
 |14|[Fineweb-2](https://huggingface.co/datasets/HuggingFaceFW/fineweb-2)|:white_check_mark:| | |Open Data Commons|45,397|12,800,376|93,757,717|281.965|2065.284|0.935| 
@@ -31,4 +31,5 @@ Publicly available corpora that contain text in Guarani.
 |25|[Opus](https://opus.nlpl.eu/GNOME/es&gn/v1/GNOME)|:white_check_mark:| | |GNU General Public License|267|627|4,388|2.348|16.434|0.340| 
 |26|[Smolsent__En_Gn](https://huggingface.co/datasets/google/smol/viewer/smolsent__en_gn)|:white_check_mark:|:white_check_mark:| |CC BY 4.0|863|10,563|82,042|12.240|95.066|0.998| 
 |27|[Tatoeba](https://tatoeba.org/en/downloads)|:white_check_mark:| | |Creative Commons|3,367|13,269|95,040|3.941|28.227|0.939| 
-| -- | Total | -- | -- | -- | -- | 827,930 | 29,149,220 | 215,249,097 | -- | -- | -- |  
+|28|[Udhr-Lid](https://huggingface.co/datasets/cis-lmu/udhr-lid)|:white_check_mark:|:white_check_mark:| |cc0-1.0|122|3,210|24,694|26.311|202.410|0.972| 
+| -- | Total | -- | -- | -- | -- | 812,808 | 29,152,430 | 215,258,547 | -- | -- | -- |  

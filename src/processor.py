@@ -285,7 +285,7 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
     Returns:
         None
     """
-    if corpus_name in ('Alpaca-gn-gpt4','Alpaca-gn-gpt3.5','gn-multi-affective-alpaca','mala-monolingual-split'):
+    if corpus_name in ('Alpaca-gn-gpt4','Alpaca-gn-gpt3.5','gn-multi-affective-alpaca','mala-monolingual-split','cc100_gn'):
         df = read_csv_corpus(file_path, sep, names, drop_incomplete_records=False)
     else:
         df = read_csv_corpus(file_path, sep, names)
@@ -305,17 +305,17 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
                     str(row["output"])
                 ]
                 text = " ".join(parts)
-                print(text)
 
             else:
                 text = row[text_col_name]
-                print(text)
-
-            if isinstance(text, str):
+            if isinstance(text, str) and text.strip():
                 source = row[source_col_name] if source_col_name in row else 'unknown'
                 url = row[url_col_name] if url_col_name in row else 'unknown'
                 text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
                     process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
+                if lang_score < 0.70 and lang_code == "grn":
+                    continue
+
                 data.append(text_dict)
                 report_dict['num_docs'] += 1
                 report_dict['num_words_split'] += num_words_split
@@ -660,6 +660,11 @@ def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename,
         source_col_name = ''
         url_col_name = ''
         corpus_name = 'cc100_gn'
+    elif 'udhr-lid' in corpus_dir_name:
+        text_col_name = 'sentence'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'udhr-lid'
     else:
         raise Exception(f'Unknown corpus in path {corpus_dir_path}')
     process_csv_corpus(file_path, processed_dir, corpus_name, text_col_name, 

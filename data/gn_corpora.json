@@ -366,6 +366,18 @@
         "parallel": false,
         "synthetic": false,
         "license": "unknown"
+    },
+    {
+        "name": "udhr-lid",
+        "url": "https://huggingface.co/datasets/cis-lmu/udhr-lid",
+        "download_urls": [
+            "https://huggingface.co/datasets/cis-lmu/udhr-lid/raw/main/udhr-lid.csv"
+        ],
+        "format": "csv",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "cc0-1.0"
     }
 ]
 
