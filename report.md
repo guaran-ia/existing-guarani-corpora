@@ -6,17 +6,17 @@ Publicly available corpora that contain text in Guarani.
 |:---:|:---|:---:|:---:|:---:|:---|---:|---:|---:|---:|---:|---:| 
 |1|[Alpaca-Gn-Gpt3.5](https://huggingface.co/datasets/rubuntu/dataset-guarani-jopara-v01)|:white_check_mark:|:white_check_mark:|:white_check_mark:|unknown|52,002|2,685,520|19,785,216|51.643|380.470|0.992| 
 |2|[Alpaca-Gn-Gpt4](https://huggingface.co/datasets/cis-lmu/Glot500)|:white_check_mark:|:white_check_mark:|:white_check_mark:|CC BY-NC|52,002|5,614,293|41,627,734|107.963|800.503|0.995| 
-|3|[Finepdf](https://huggingface.co/datasets/HuggingFaceFW/finepdfs/viewer/gug_Latn)|:white_check_mark:| | |odc-by|199|756,487|5,034,167|3801.442|25297.322|0.937| 
-|4|[Americasnli](https://github.com/abteen/americasnli)| | | |Creative Commons|1,990|13,611|101,889|6.840|51.201|0.983| 
-|5|[Americasnlp2022](https://github.com/AmericasNLP/americasnlp2022)| |:white_check_mark:| |Creative Commons|386|1,666|11,941|4.316|30.935|0.916| 
-|6|[Americasnlp2023](https://github.com/AmericasNLP/americasnlp2023)| |:white_check_mark:| |Unknown|27,027|413,175|3,161,598|15.287|116.979|0.979| 
-|7|[Americasnlp2024](https://github.com/AmericasNLP/americasnlp2024)| |:white_check_mark:| |Unknown|109,719|1,446,800|11,053,563|13.186|100.744|0.950| 
-|8|[Ancora](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:|:white_check_mark:|GNU Public License|14,120|334,973|2,320,434|23.723|164.337|0.810| 
-|9|[Belele](https://huggingface.co/datasets/facebook/2M-Belebele)|:white_check_mark:| | |Creative Commons|1,800|65,713|503,106|36.507|279.503|0.996| 
-|10|[Bible](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|22,818|386,549|2,684,120|16.941|117.632|0.990| 
-|11|[Cc100_Gn](https://huggingface.co/datasets/statmt/cc100/tree/refs%2Fconvert%2Fparquet/gn)|:white_check_mark:| | |unknown|57,041|967,653|7,307,455|16.964|128.109|0.983| 
-|12|[Commonvoice](https://datacollective.mozillafoundation.org/datasets/cmflnuzw5snt23l6000zq12ei)| | | |Creative Commons|6,154|26,352|196,386|4.282|31.912|0.956| 
-|13|[Culturax](https://huggingface.co/datasets/uonlp/CulturaX)|:white_check_mark:| | |Open Data and Creative Commons|63|2,333|17,437|37.032|276.778|0.998| 
+|3|[Americasnli](https://github.com/abteen/americasnli)| | | |Creative Commons|1,990|13,611|101,889|6.840|51.201|0.983| 
+|4|[Americasnlp2022](https://github.com/AmericasNLP/americasnlp2022)| |:white_check_mark:| |Creative Commons|386|1,666|11,941|4.316|30.935|0.916| 
+|5|[Americasnlp2023](https://github.com/AmericasNLP/americasnlp2023)| |:white_check_mark:| |Unknown|27,027|413,175|3,161,598|15.287|116.979|0.979| 
+|6|[Americasnlp2024](https://github.com/AmericasNLP/americasnlp2024)| |:white_check_mark:| |Unknown|109,719|1,446,800|11,053,563|13.186|100.744|0.950| 
+|7|[Ancora](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:|:white_check_mark:|GNU Public License|14,120|334,973|2,320,434|23.723|164.337|0.810| 
+|8|[Belele](https://huggingface.co/datasets/facebook/2M-Belebele)|:white_check_mark:| | |Creative Commons|1,800|65,713|503,106|36.507|279.503|0.996| 
+|9|[Bible](https://github.com/baladon-lucas-pardinas/NMT-Translation-gn-es/tree/main/artifacts/data/raw)| |:white_check_mark:| |Unknown|22,818|386,549|2,684,120|16.941|117.632|0.990| 
+|10|[Cc100_Gn](https://huggingface.co/datasets/statmt/cc100/tree/refs%2Fconvert%2Fparquet/gn)|:white_check_mark:| | |unknown|57,041|967,653|7,307,455|16.964|128.109|0.983| 
+|11|[Commonvoice](https://datacollective.mozillafoundation.org/datasets/cmflnuzw5snt23l6000zq12ei)| | | |Creative Commons|6,154|26,352|196,386|4.282|31.912|0.956| 
+|12|[Culturax](https://huggingface.co/datasets/uonlp/CulturaX)|:white_check_mark:| | |Open Data and Creative Commons|63|2,333|17,437|37.032|276.778|0.998| 
+|13|[Finepdf](https://huggingface.co/datasets/HuggingFaceFW/finepdfs/viewer/gug_Latn)|:white_check_mark:| | |odc-by|199|756,487|5,034,167|3801.442|25297.322|0.937| 
 |14|[Fineweb-2](https://huggingface.co/datasets/HuggingFaceFW/fineweb-2)|:white_check_mark:| | |Open Data Commons|45,397|12,800,376|93,757,717|281.965|2065.284|0.935| 
 |15|[Glot500](https://huggingface.co/datasets/cis-lmu/Glot500)|:white_check_mark:| | |Creative Commons Zero v1.0 (CC0-1.0)|85,567|1,803,387|13,310,496|21.076|155.556|0.953| 
 |16|[Gn-Multi-Affective-Alpaca](https://huggingface.co/datasets/Capibara-LLM/gn-multi-affective-alpaca)| | | |cc-by-nc-4.0|5,583|78,947|569,853|14.141|102.069|0.996| 

@@ -8,7 +8,8 @@ from urllib.parse import urlparse
 from utils import create_jsonl, word_count_spacy, word_count_split, \
     identify_language, save_to_json, sanitize_tsv_corpus
 
-
+MIN_LANGUAGE_SCORE = 0.70
+TARGET_LANGUAGE_CODE = "grn"
 def process_parquet_files(dir_path):
     """
     Convert all `.parquet` files in a directory (recursively) to `.csv` format.
@@ -181,7 +182,6 @@ def get_domain(url):
   except:
     return None
 
-
 def read_csv_corpus(file_path, sep=',', names=None, ignore_bad_lines=True, 
                     drop_incomplete_records=True):
     """
@@ -285,27 +285,25 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
     Returns:
         None
     """
-    if corpus_name in ('Alpaca-gn-gpt4','Alpaca-gn-gpt3.5','gn-multi-affective-alpaca','mala-monolingual-split','cc100_gn'):
+    gn_corpora = ('Alpaca-gn-gpt4','Alpaca-gn-gpt3.5','gn-multi-affective-alpaca','mala-monolingual-split','cc100_gn')
+    instruction_based_corpora  = ('Alpaca-gn-gpt4', 'Alpaca-gn-gpt3.5', 'gn-multi-affective-alpaca')
+    if corpus_name in gn_corpora:
         df = read_csv_corpus(file_path, sep, names, drop_incomplete_records=False)
     else:
         df = read_csv_corpus(file_path, sep, names)
-
     if df.shape[0] > 0:
-
         print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
         report_dict = get_report_dict()
         corpus_file_name = file_path.split('/')[-1]
         data = []
-        contador = 0
         for _, row in df.iterrows():
-            if corpus_name in ('Alpaca-gn-gpt4','Alpaca-gn-gpt3.5','gn-multi-affective-alpaca'):
+            if corpus_name in instruction_based_corpora:
                 parts = [
                     str(row["instruction"]),
                     str(row["input"]),
                     str(row["output"])
                 ]
                 text = " ".join(parts)
-
             else:
                 text = row[text_col_name]
             if isinstance(text, str) and text.strip():
@@ -313,9 +311,8 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
                 url = row[url_col_name] if url_col_name in row else 'unknown'
                 text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
                     process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
-                if lang_score < 0.70 and lang_code == "grn":
+                if lang_score < MIN_LANGUAGE_SCORE and lang_code == TARGET_LANGUAGE_CODE:
                     continue
-
                 data.append(text_dict)
                 report_dict['num_docs'] += 1
                 report_dict['num_words_split'] += num_words_split
@@ -476,68 +473,51 @@ def process_jsonl_corpus(file_path,output_dir_path,corpus_name,lang_code='grn',
     """
     Process a corpus stored in JSON Lines (JSONL) format.
 
-    Supported schemas:
-    - FLORES-like corpora: fields 'flores_passage' and/or 'question'
-    - Parallel corpora: field 'trg' (target language, e.g. Guarani)
-
-    Each extracted text is processed independently and contributes
-    to corpus-level statistics.
+    Iterates through JSON records, extracts relevant text fields (e.g., 
+    'flores_passage' and 'question'), analyzes them, and saves results.
 
     Args:
         file_path (str): Path to the JSONL corpus file.
-        output_dir_path (str): Directory for processed corpus output.
-        corpus_name (str): Name of the corpus.
-        lang_code (str, optional): Default language code for FLORES texts.
-        lang_script (str, optional): Script code (e.g. 'Latn').
+        output_dir_path (str): Directory for processed corpus.
+        corpus_name (str): Corpus name.
+        lang_code (str, optional): Language code.
+        lang_script (str, optional): Script code.
         writing_mode (str, optional): File writing mode ('a' or 'w').
 
     Returns:
         None
     """
-
     print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
-
     data = []
     report_dict = get_report_dict()
     f_data = read_jsonl_corpus(file_path)
     corpus_file_name = file_path.split('/')[-1]
-
     for line in f_data:
         text_items = []
-
-        # ---------- FLORES-LIKE SCHEMA ----------
         # Expected fields: 'flores_passage' and/or 'question'
         if 'flores_passage' in line or 'question' in line:
-
             if isinstance(line.get('flores_passage'), str):
                 text_items.append({
                     "text": line['flores_passage']
                 })
-
             if isinstance(line.get('question'), str):
                 text_items.append({
                     "text": line['question']
                 })
-
-        # ---------- PARALLEL CORPUS (TARGET SIDE ONLY) ----------
         # Expected field: 'trg' (e.g. Guarani)
         elif 'trg' in line:
-
             if isinstance(line.get('trg'), str):
                 text_items.append({
                     "text": line['trg']
                 })
-
         # ---------- UNKNOWN / UNSUPPORTED SCHEMA ----------
         else:
             raise ValueError(
                 f"Unsupported JSONL format in {corpus_name}: {line.keys()}"
             )
-
         # ---------- TEXT PROCESSING ----------
         for item in text_items:
             text = item["text"]
-
             text_dict, num_words_split, num_words_punct_spacy, \
             num_words_no_punct_spacy, lang_score = process_text(
                 text,
@@ -548,14 +528,11 @@ def process_jsonl_corpus(file_path,output_dir_path,corpus_name,lang_code='grn',
                 lang_code,     # lang_code
                 lang_script
             )
-
             if text_dict['language'] != lang_code:
                 continue
-            if lang_score < 0.70:
+            if lang_score < MIN_LANGUAGE_SCORE:
                 continue
-
             data.append(text_dict)
-
             # ---------- UPDATE REPORT METRICS ----------
             report_dict['num_docs'] += 1
             report_dict['num_words_split'] += num_words_split

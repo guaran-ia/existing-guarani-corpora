@@ -170,7 +170,7 @@ def create_report(project_dir):
     report += "|:---:|:---|:---:|:---:|:---:|:---|---:|---:|---:|---:|---:|---:| \n"
     total_docs, total_words, total_chars = 0, 0, 0
     # sort corpus by name
-    gn_corpora = sorted(gn_corpora, key=lambda x: x['name'])
+    gn_corpora = sorted(gn_corpora, key=lambda x: x['name'].strip().lower())
     for i, corpus in enumerate(gn_corpora, start=1):
         report += f"|{i}|"
         report += f"[{corpus['name'].title()}]({corpus['url']})|"
