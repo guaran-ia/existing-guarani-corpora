@@ -8,4 +8,5 @@ __pycache__
 *.pyo
 *.pyd
 data/raw
-src/corpus
+existing_corpora_env/
+src/corpus/

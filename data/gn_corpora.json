@@ -264,6 +264,117 @@
         "license": "Creative Commons"
     },
     {
+        "name": "multi-wiki-qa",
+        "url": "https://huggingface.co/datasets/alexandrainst/multi-wiki-qa",
+        "download_urls": 
+            [
+                "https://huggingface.co/datasets/alexandrainst/multi-wiki-qa/resolve/main/gn/train-00000-of-00001.parquet"
+            ],
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": true,
+        "license": "CC BY-NC-SA 4.0"
+    },
+    {
+        "name": "apollomoedataset",
+        "url": "https://huggingface.co/datasets/FreedomIntelligence/ApolloMoEDataset",
+        "download_urls": 
+            [
+                "https://huggingface.co/datasets/FreedomIntelligence/ApolloMoEDataset/resolve/main/ApolloMoEDataset.json"
+            ],
+        "format": "json",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": true,
+        "license": "mit"
+    },
+    {
+        "name": "apollomoebench",
+        "url": "https://huggingface.co/datasets/FreedomIntelligence/ApolloMoEDataset",
+        "download_urls": 
+            [
+                "https://huggingface.co/datasets/FreedomIntelligence/ApolloMoEBench/resolve/main/ApolloMoEBench.json"
+            ],
+        "format": "json",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": true,
+        "license": "mit"
+    },
+    {
+        "name": "flores-200",
+        "url": "https://huggingface.co/datasets/facebook/flores",
+        "download_urls": 
+            [
+                "https://huggingface.co/datasets/facebook/flores/resolve/refs%2Fconvert%2Fparquet/acm_Arab-grn_Latn/flores-dev.parquet",
+                "https://huggingface.co/datasets/facebook/flores/resolve/refs%2Fconvert%2Fparquet/acm_Arab-grn_Latn/flores-devtest.parquet",
+                "https://huggingface.co/datasets/facebook/flores/resolve/refs%2Fconvert%2Fparquet/bos_Latn-grn_Latn/flores-dev.parquet",
+                "https://huggingface.co/datasets/facebook/flores/resolve/refs%2Fconvert%2Fparquet/bos_Latn-grn_Latn/flores-devtest.parquet",
+                "https://huggingface.co/datasets/facebook/flores/resolve/refs%2Fconvert%2Fparquet/eng_Latn-grn_Latn/flores-dev.parquet",
+                "https://huggingface.co/datasets/facebook/flores/resolve/refs%2Fconvert%2Fparquet/eng_Latn-grn_Latn/flores-devtest.parquet",
+                "https://huggingface.co/datasets/facebook/flores/resolve/refs%2Fconvert%2Fparquet/epo_Latn-grn_Latn/flores-dev.parquet",
+                "https://huggingface.co/datasets/facebook/flores/resolve/refs%2Fconvert%2Fparquet/epo_Latn-grn_Latn/flores-devtest.parquet"
+            ],
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "CC BY-SA 4.0"
+    },
+    {
+        "name": "moscar",
+        "url": "https://huggingface.co/datasets/oscar-corpus/mOSCAR",
+        "download_urls": 
+            [
+                "https://huggingface.co/datasets/oscar-corpus/mOSCAR/resolve/main/data/grn_Latn/00000.parquet",
+                "https://huggingface.co/datasets/oscar-corpus/mOSCAR/resolve/main/data/grn_Latn/00001.parquet",
+                "https://huggingface.co/datasets/oscar-corpus/mOSCAR/resolve/main/data/grn_Latn/00002.parquet",
+                "https://huggingface.co/datasets/oscar-corpus/mOSCAR/resolve/main/data/grn_Latn/00003.parquet",
+                "https://huggingface.co/datasets/oscar-corpus/mOSCAR/resolve/main/data/grn_Latn/00004.parquet"
+            ],
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "CC BY 4.0"
+    },
+    {
+        "name": "opus-all-es",
+        "url": "https://opus.nlpl.eu/results/es&gn/corpus-result-table",
+        "download_urls": 
+            [
+                "https://object.pouta.csc.fi/OPUS-Tatoeba/v2023-04-12/mono/gn.txt.gz",
+                "https://object.pouta.csc.fi/OPUS-GNOME/v1/mono/gn.txt.gz",
+                "https://object.pouta.csc.fi/OPUS-wikimedia/v20230407/mono/gn.txt.gz",
+                "https://object.pouta.csc.fi/OPUS-QED/v2.0a/mono/gn.txt.gz",
+                "https://object.pouta.csc.fi/OPUS-Ubuntu/v14.10/mono/gn.txt.gz"
+            ],
+        "format": "txt.gz",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "Multiple"
+    },
+    {
+        "name": "opus-all-en",
+        "url": "https://opus.nlpl.eu/results/en&gn/corpus-result-table",
+        "download_urls": 
+            [
+                "https://object.pouta.csc.fi/OPUS-NLLB/v1/mono/gn.txt.gz",
+                "https://object.pouta.csc.fi/OPUS-GNOME/v1/mono/gn.txt.gz",
+                "https://object.pouta.csc.fi/OPUS-Tatoeba/v2023-04-12/mono/gn.txt.gz",
+                "https://object.pouta.csc.fi/OPUS-wikimedia/v20230407/mono/gn.txt.gz",
+                "https://object.pouta.csc.fi/OPUS-QED/v2.0a/mono/gn.txt.gz",
+                "https://object.pouta.csc.fi/OPUS-Ubuntu/v14.10/mono/gn.txt.gz"
+            ],
+        "format": "txt.gz",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "Multiple"
+    },
+    {
         "name": "glot500",
         "url": "https://huggingface.co/datasets/cis-lmu/Glot500",
         "download_urls": [

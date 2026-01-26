@@ -3,6 +3,8 @@ import os
 import pandas as pd
 import re
 import xml.etree.ElementTree as ET
+import ast
+import ijson
 
 from urllib.parse import urlparse
 from utils import create_jsonl, word_count_spacy, word_count_split, \
@@ -59,7 +61,6 @@ def process_text(text, corpus_name, corpus_file_name, source, url, lang_code, la
             - num_words_no_punct_spacy (int)
             - lang_score (float)
     """
-    
     num_words_split = word_count_split(text)
     num_words_punct_spacy = word_count_spacy(text, include_punct=True)
     num_words_no_punct_spacy = word_count_spacy(text, include_punct=False)
@@ -273,7 +274,7 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
         file_path (str): Path to the CSV or TSV corpus file.
         output_dir_path (str): Directory for output corpus data.
         corpus_name (str): Name of the corpus.
-        text_col_name (str): Column containing the text.
+        text_col_name (str or list[str]): Column containing the text.
         source_col_name (str, optional): Column with source information.
         url_col_name (str, optional): Column with URLs.
         lang_code (str, optional): Default language code (default 'grn').
@@ -296,22 +297,29 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
         report_dict = get_report_dict()
         corpus_file_name = file_path.split('/')[-1]
         data = []
-        for _, row in df.iterrows():
-            if corpus_name in instruction_based_corpora:
-                parts = [
-                    str(row["instruction"]),
-                    str(row["input"]),
-                    str(row["output"])
-                ]
-                text = " ".join(parts)
-            else:
-                text = row[text_col_name]
-            if isinstance(text, str) and text.strip():
+        if corpus_name == 'multi-wiki-qa':
+            for _, row in df.iterrows():
+                context, question, answer = row[text_col_name[0]], row[text_col_name[1]], row[text_col_name[2]]
+                text = ""
+                if isinstance(context, str):
+                    text += context
+                if isinstance(question, str):
+                    text += f"\n\n{question}"
+                if isinstance(answer, str):
+                    try:
+                        answer_dict = ast.literal_eval(answer)
+                        text += f"\n\n{' '.join(answer_dict["text"])}"
+                    except Exception:
+                        pass                
+                if not text:
+                    continue
                 source = row[source_col_name] if source_col_name in row else 'unknown'
                 url = row[url_col_name] if url_col_name in row else 'unknown'
                 text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
-                    process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
-                if lang_score < MIN_LANGUAGE_SCORE and lang_code == TARGET_LANGUAGE_CODE:
+                    process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)                
+                if text_dict['language'] != lang_code:
+                    continue
+                if lang_score < MIN_LANGUAGE_SCORE:
                     continue
                 data.append(text_dict)
                 report_dict['num_docs'] += 1
@@ -320,12 +328,70 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
                 report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
                 report_dict['num_chars'] += len(text)
                 report_dict['sum_lang_score'] += lang_score
-            else:
-                print(f'Text {text} not an instance of string, excluding...')
-        if corpus_name == 'americasnli':
-            text_collection = df['premise'].unique().tolist()
-            data.extend(process_text_collection(text_collection, report_dict, corpus_name,
-                                                corpus_file_name, lang_code, lang_script))
+        elif corpus_name == 'moscar':
+            for index, row in df.iterrows():
+                try:
+                    text_list = ast.literal_eval(row[text_col_name].replace('}\n', '},').replace('...\n ', ''))
+                    metadata_list = ast.literal_eval(row[url_col_name])
+                except Exception as e:
+                    print(f"Failed to convert line {index} from string: {e}")
+                    continue
+                if isinstance(text_list, list):
+                    text = '\n'.join([t['text'] for t in text_list])
+                else:
+                    continue
+                if isinstance(metadata_list, dict):
+                    url = metadata_list.get('url', 'unknown')
+                source = 'unknown'
+                text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
+                    process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
+                if text_dict['language'] != lang_code:
+                    continue
+                if lang_score < MIN_LANGUAGE_SCORE:
+                    continue
+                data.append(text_dict)
+                report_dict['num_docs'] += 1
+                report_dict['num_words_split'] += num_words_split
+                report_dict['num_words_punct_spacy'] += num_words_punct_spacy
+                report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
+                report_dict['num_chars'] += len(text)
+                report_dict['sum_lang_score'] += lang_score
+        else:
+            for _, row in df.iterrows():
+                if corpus_name in instruction_based_corpora:
+                    parts = [
+                        str(row["instruction"]),
+                        str(row["input"]),
+                        str(row["output"])
+                    ]
+                    text = " ".join(parts)
+                else:
+                    text = row[text_col_name]
+                if isinstance(text, str) and text.strip():
+                    source = row[source_col_name] if source_col_name in row else 'unknown'
+                    url = row[url_col_name] if url_col_name in row else 'unknown'
+                    text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
+                        process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)                    
+                    if text_dict['language'] != lang_code:
+                        continue
+                    if lang_score < MIN_LANGUAGE_SCORE:
+                        continue
+                    if lang_score < MIN_LANGUAGE_SCORE and lang_code == TARGET_LANGUAGE_CODE:
+                        continue
+                    data.append(text_dict)
+                    report_dict['num_docs'] += 1
+                    report_dict['num_words_split'] += num_words_split
+                    report_dict['num_words_punct_spacy'] += num_words_punct_spacy
+                    report_dict['num_words_no_punct_spacy'] += num_words_no_punct_spacy
+                    report_dict['num_chars'] += len(text)
+                    report_dict['sum_lang_score'] += lang_score
+                else:
+                    print(f'Text {text} not an instance of string, excluding...')
+            if corpus_name == 'americasnli':
+                text_collection = df['premise'].unique().tolist()
+                data.extend(process_text_collection(text_collection, report_dict, corpus_name,
+                                                    corpus_file_name, lang_code, lang_script))
+                
         print(f'Finished processing {corpus_file_name}. From {df.shape[0]} lines, {report_dict["num_docs"]} were included')
         save_processing(output_dir_path, corpus_name, data, writing_mode, report_dict)
 
@@ -356,10 +422,22 @@ def process_text_collection(content_collection, report_dict, corpus_name,
                 continue
             if separator:
                 text = text.split(separator['str'])[separator['idx']]
+            source = 'unknown'
+            url = 'unknown'
+            if 'opus-all' in corpus_name:
+                rgx = r"OPUS-(.*)_mono_gn.txt"
+                res = re.search(rgx, corpus_file_name)
+                try:
+                    source = res.group(1)
+                except:
+                    pass
             text_dict, num_words_split, num_words_punct_spacy, \
                 num_words_no_punct_spacy, lang_score = \
-                process_text(text, corpus_name, corpus_file_name, 'unknown', 
-                             'unknown', lang_code, lang_script)
+                process_text(text, corpus_name, corpus_file_name, source, url, lang_code, lang_script)
+            if text_dict['language'] != lang_code:
+                continue
+            if lang_score < MIN_LANGUAGE_SCORE:
+                continue
             data.append(text_dict)
             report_dict['num_docs'] += 1
             report_dict['num_words_split'] += num_words_split
@@ -563,8 +641,7 @@ def get_corpus_file_names(corpus_dir_path):
     """
     return os.listdir(corpus_dir_path)
 
-
-def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename, 
+def prepare_processing_csv_corpus(corpus_dir_path, corpus_dir_name, filename, 
                                   processed_dir):
     """
     Identify corpus type and process a CSV-based corpus accordingly.
@@ -597,6 +674,21 @@ def prepare_processing_cvs_corpus(corpus_dir_path, corpus_dir_name, filename,
         source_col_name = ''
         url_col_name = 'url'
         corpus_name = 'fineweb-2'
+    elif 'multi-wiki-qa' in corpus_dir_name:
+        text_col_name = ['context', 'question', 'answers']
+        source_col_name = ''
+        url_col_name = 'id'
+        corpus_name = 'multi-wiki-qa'
+    elif 'flores-200' in corpus_dir_name:
+        text_col_name = 'sentence_grn_Latn'
+        source_col_name = 'domain'
+        url_col_name = 'URL'
+        corpus_name = 'flores-200'
+    elif 'moscar' in corpus_dir_name:
+        text_col_name = 'text'
+        source_col_name = ''
+        url_col_name = 'metadata'
+        corpus_name = 'moscar'
     elif 'glot500' in corpus_dir_name:
         text_col_name = 'text'
         source_col_name = ''
@@ -729,7 +821,6 @@ def prepare_processing_xml_corpus(corpus_dir_path, corpus_dir_name, filename,
         corpus_dir_name (str): Corpus name identifier.
         filename (str): XML file name.
         processed_dir (str): Directory to save processed corpus.
-
     Returns:
         None
     """
@@ -753,6 +844,23 @@ def prepare_processing_jsonl_corpus(corpus_dir_path, corpus_dir_name, filename,
     """
     file_path = os.path.join(corpus_dir_path, filename)
     process_jsonl_corpus(file_path, processed_dir, corpus_dir_name)
+
+def prepare_processing_json_corpus(corpus_dir_path, corpus_dir_name, filename, processed_dir):
+    """
+    Prepare and process a JSON corpus file.
+
+    Args:
+        corpus_dir_path (str): Path to corpus directory.
+        corpus_dir_name (str): Name of corpus.
+        filename (str): JSON file name.
+        processed_dir (str): Output directory.
+
+    Returns:
+        None
+    """
+
+    file_path = os.path.join(corpus_dir_path, filename)
+    process_json_corpus(file_path, processed_dir, corpus_dir_name)
 
 
 def process_corpora(raw_corpora_dir_path, processed_corpora_dir, overwrite=False):
@@ -787,7 +895,7 @@ def process_corpora(raw_corpora_dir_path, processed_corpora_dir, overwrite=False
         corpus_file_names = get_corpus_file_names(corpus_path)
         for filename in corpus_file_names:
             if filename.endswith('.csv'):
-                prepare_processing_cvs_corpus(
+                prepare_processing_csv_corpus(
                     corpus_path, corpus_dir_name, filename, processed_corpora_dir
                 )
             elif filename.endswith('.gn') or filename.endswith('.txt'):
@@ -804,6 +912,10 @@ def process_corpora(raw_corpora_dir_path, processed_corpora_dir, overwrite=False
                 )
             elif filename.endswith('jsonl'):
                 prepare_processing_jsonl_corpus(
+                    corpus_path, corpus_dir_name, filename, processed_corpora_dir
+                )
+            elif filename.endswith('.json'):
+                prepare_processing_json_corpus(
                     corpus_path, corpus_dir_name, filename, processed_corpora_dir
                 )
             else:
@@ -890,7 +1002,9 @@ def check_processed_corpora(processed_corpora_dir, raw_records):
         corpus_file_names = get_corpus_file_names(corpus_path)
         for filename in corpus_file_names:
             file_path = os.path.join(corpus_path, filename)
-            raw_corpus_num_records = raw_records[corpus_dir_name]
+            raw_corpus_num_records = raw_records.get(corpus_dir_name, None)
+            if not raw_corpus_num_records:
+                continue
             if filename.endswith('json'):
                 with open(file_path, 'r') as f:
                     processed_corpus_report = json.load(f)
