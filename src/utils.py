@@ -8,6 +8,8 @@ from corpus.src.pipeline.language_identifier.language_identifier import Language
 
 # set up spacy word segmentator
 word_seg = spacy.blank("xx")
+# allow HUGE documents (FinePDF, long PDFs, etc.)
+word_seg.max_length = 10_000_000
 # set up guarani language identifier
 identifier = LanguageIdentifier(glotlid=True, fasttext=True, openlid=True)
 # define Guarani iso-6393 code
@@ -167,7 +169,7 @@ def create_report(project_dir):
     report += "|:---:|:---|:---:|:---:|:---:|:---|---:|---:|---:|---:|---:|---:| \n"
     total_docs, total_words, total_chars = 0, 0, 0
     # sort corpus by name
-    gn_corpora = sorted(gn_corpora, key=lambda x: x['name'])
+    gn_corpora = sorted(gn_corpora, key=lambda x: x['name'].strip().lower())
     for i, corpus in enumerate(gn_corpora, start=1):
         report += f"|{i}|"
         report += f"[{corpus['name'].title()}]({corpus['url']})|"

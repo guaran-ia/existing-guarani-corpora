@@ -287,7 +287,12 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
     Returns:
         None
     """
-    df = read_csv_corpus(file_path, sep, names)
+    gn_corpora = ('Alpaca-gn-gpt4','Alpaca-gn-gpt3.5','gn-multi-affective-alpaca','mala-monolingual-split','cc100_gn','FinePDF')
+    instruction_based_corpora  = ('Alpaca-gn-gpt4', 'Alpaca-gn-gpt3.5', 'gn-multi-affective-alpaca')
+    if corpus_name in gn_corpora:
+        df = read_csv_corpus(file_path, sep, names, drop_incomplete_records=False)
+    else:
+        df = read_csv_corpus(file_path, sep, names)
     if df.shape[0] > 0:
         print(f'Processing corpus: {"/".join(file_path.split("/")[-2:])}')
         report_dict = get_report_dict()
@@ -354,8 +359,16 @@ def process_csv_corpus(file_path, output_dir_path, corpus_name, text_col_name,
                 report_dict['sum_lang_score'] += lang_score
         else:
             for _, row in df.iterrows():
-                text = row[text_col_name]
-                if isinstance(text, str):
+                if corpus_name in instruction_based_corpora:
+                    parts = [
+                        str(row["instruction"]),
+                        str(row["input"]),
+                        str(row["output"])
+                    ]
+                    text = " ".join(parts)
+                else:
+                    text = row[text_col_name]
+                if isinstance(text, str) and text.strip():
                     source = row[source_col_name] if source_col_name in row else 'unknown'
                     url = row[url_col_name] if url_col_name in row else 'unknown'
                     text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
@@ -557,7 +570,7 @@ def process_jsonl_corpus(file_path, output_dir_path, corpus_name, lang_code='grn
     f_data = read_jsonl_corpus(file_path)
     corpus_file_name = file_path.split('/')[-1]
     for line in f_data:
-        for text in [line['flores_passage'], line['question']]:
+        for text in [line.get('flores_passage'), line.get('question'), line.get('trg')]:
             if isinstance(text, str):
                 text_dict, num_words_split, num_words_punct_spacy, num_words_no_punct_spacy, lang_score = \
                     process_text(text, corpus_name, corpus_file_name, 'unknown', 'unknown', lang_code, lang_script)
@@ -700,6 +713,51 @@ def prepare_processing_csv_corpus(corpus_dir_path, corpus_dir_name, filename,
         source_col_name = ''
         url_col_name = 'metadata'
         corpus_name = 'moscar'
+    elif 'glot500' in corpus_dir_name:
+        text_col_name = 'text'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'glot500'
+    elif 'Alpaca-gn-gpt4' in corpus_dir_name:
+        text_col_name = 'instruction'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'Alpaca-gn-gpt4'
+    elif 'Alpaca-gn-gpt3.5' in corpus_dir_name:
+        text_col_name = 'instruction'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'Alpaca-gn-gpt3.5'
+    elif 'FinePDF' in corpus_dir_name:
+        text_col_name = 'text'
+        source_col_name = ''
+        url_col_name = 'url'
+        corpus_name = 'FinePDF'
+    elif 'gn-multi-affective-alpaca' in corpus_dir_name:
+        text_col_name = 'instruction'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'gn-multi-affective-alpaca'
+    elif 'mala-monolingual-split' in corpus_dir_name:
+        text_col_name = 'text'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'mala-monolingual-split'
+    elif 'smolsent__en_gn' in corpus_dir_name:
+        text_col_name = 'trg'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'smolsent__en_gn'
+    elif 'cc100_gn' in corpus_dir_name:
+        text_col_name = 'text'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'cc100_gn'
+    elif 'udhr-lid' in corpus_dir_name:
+        text_col_name = 'sentence'
+        source_col_name = ''
+        url_col_name = ''
+        corpus_name = 'udhr-lid'
     else:
         raise Exception(f'Unknown corpus in path {corpus_dir_path}')
     process_csv_corpus(file_path, processed_dir, corpus_name, text_col_name, 
