@@ -373,5 +373,121 @@
         "parallel": true,
         "synthetic": false,
         "license": "Multiple"
+    },
+    {
+        "name": "glot500",
+        "url": "https://huggingface.co/datasets/cis-lmu/Glot500",
+        "download_urls": [
+            "https://huggingface.co/api/datasets/cis-lmu/Glot500/parquet/grn_Latn/train/0.parquet"
+        ],
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "Creative Commons Zero v1.0 (CC0-1.0)"
+    },
+    {
+        "name": "Alpaca-gn-gpt4",
+        "url": "https://huggingface.co/datasets/saillab/alpaca-guarani-cleaned",
+        "download_urls": [
+            "https://huggingface.co/datasets/saillab/alpaca-guarani-cleaned/resolve/main/data/test-00000-of-00001-4c896f44259f2c97.parquet",
+            "https://huggingface.co/datasets/saillab/alpaca-guarani-cleaned/resolve/main/data/train-00000-of-00001-0eb988ff2285b7a5.parquet"
+        ],
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": true,
+        "license": "CC BY-NC"
+    },
+    {
+        "name": "Alpaca-gn-gpt3.5",
+        "url": "https://huggingface.co/datasets/rubuntu/dataset-guarani-jopara-v01",
+        "download_urls": [
+            "https://huggingface.co/datasets/rubuntu/dataset-guarani-jopara-v01/resolve/main/data/test-00000-of-00001.parquet",
+            "https://huggingface.co/datasets/rubuntu/dataset-guarani-jopara-v01/resolve/main/data/train-00000-of-00001.parquet",
+            "https://huggingface.co/datasets/rubuntu/dataset-guarani-jopara-v01/resolve/main/data/validation-00000-of-00001.parquet"
+
+        ],
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": true,
+        "license": "unknown"
+    },
+    {
+        "name": "FinePDF",
+        "url": "https://huggingface.co/datasets/HuggingFaceFW/finepdfs/viewer/gug_Latn",
+        "download_urls": [
+            "https://huggingface.co/datasets/HuggingFaceFW/finepdfs/resolve/main/data/gug_Latn/test/000_00000.parquet",
+            "https://huggingface.co/datasets/HuggingFaceFW/finepdfs/resolve/main/data/gug_Latn/train/000_00000.parquet"
+        ],
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "odc-by"
+    },
+    {
+        "name": "gn-multi-affective-alpaca",
+        "url": "https://huggingface.co/datasets/Capibara-LLM/gn-multi-affective-alpaca",
+        "download_urls": [
+            "https://huggingface.co/datasets/Capibara-LLM/gn-multi-affective-alpaca/resolve/main/data/test-00000-of-00001.parquet",
+            "https://huggingface.co/datasets/Capibara-LLM/gn-multi-affective-alpaca/resolve/main/data/train-00000-of-00001.parquet",
+            "https://huggingface.co/datasets/Capibara-LLM/gn-multi-affective-alpaca/resolve/main/data/validation-00000-of-00001.parquet"
+        ],
+        "format": "parquet",
+        "multilingual": false,
+        "parallel": false,
+        "synthetic": false,
+        "license": "cc-by-nc-4.0"
+    },
+    {
+        "name": "mala-monolingual-split",
+        "url": "https://huggingface.co/datasets/MaLA-LM/mala-monolingual-split",
+        "download_urls": [
+            "https://huggingface.co/datasets/MaLA-LM/mala-monolingual-split/resolve/main/gug_Latn/train.parquet",
+            "https://huggingface.co/datasets/MaLA-LM/mala-monolingual-split/resolve/main/gug_Latn/validation.parquet"        
+        ],
+        "format": "parquet",
+        "multilingual": false,
+        "parallel": false,
+        "synthetic": false,
+        "license": "odc-by"
+    },
+    {
+        "name": "smolsent__en_gn",
+        "url": "https://huggingface.co/datasets/google/smol/viewer/smolsent__en_gn",
+        "download_urls": [
+            "https://huggingface.co/datasets/google/smol/resolve/main/smolsent/en_gn.jsonl"
+        ],
+        "format": "jsonl",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "CC BY 4.0"
+    },
+    {
+        "name": "cc100_gn",
+        "url": "https://huggingface.co/datasets/statmt/cc100/tree/refs%2Fconvert%2Fparquet/gn",
+        "download_urls": [
+            "https://huggingface.co/datasets/statmt/cc100/resolve/refs%2Fconvert%2Fparquet/gn/train/0000.parquet"
+        ],
+        "format": "parquet",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "unknown"
+    },
+    {
+        "name": "udhr-lid",
+        "url": "https://huggingface.co/datasets/cis-lmu/udhr-lid",
+        "download_urls": [
+            "https://huggingface.co/datasets/cis-lmu/udhr-lid/raw/main/udhr-lid.csv"
+        ],
+        "format": "csv",
+        "multilingual": true,
+        "parallel": true,
+        "synthetic": false,
+        "license": "cc0-1.0"
     }
 ]
