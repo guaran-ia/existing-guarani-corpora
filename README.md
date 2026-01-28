@@ -98,4 +98,4 @@ A report with information and statistics about the processed corpora can be foun
 
 ## Contributors
 
-[Jorge Saldivar](https://github.com/joausaga), [Cecilia González](https://github.com/CeciGonzalez123)
+[Jorge Saldivar](https://github.com/joausaga), [Andrea Báez](https://github.com/andynicoleb), [Cecilia González](https://github.com/CeciGonzalez123), [Ramón Araujo](https://github.com/Araujoch)
