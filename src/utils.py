@@ -79,14 +79,22 @@ def identify_language(text):
             Returns None if the language is not 'grn'.
     """
     result = identifier.identify_languages(text, k=1, raw_output=False)
-    identified_lang = result['languages']
-    if identified_lang[0] == GN_CODE:
+    identified_lang = result["languages"]
+
+    if isinstance(identified_lang, dict):
+        lang = next(iter(identified_lang.keys()))
+        score = identified_lang[lang]
+    else:
+        lang = identified_lang[0]
+        score = identified_lang[1]
+
+    if lang == GN_CODE:
         return {
-            'lang': identified_lang[0], 
-            'score': identified_lang[1], 
-            'source_score': result['source'],
-            'voting_method': result['voting']
-        }
+            "lang": lang,
+            "score": score,
+            "source_score": result["source"],
+            "voting_method": result["voting"],
+    }
     return None
 
 
