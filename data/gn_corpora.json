@@ -489,5 +489,53 @@
         "parallel": true,
         "synthetic": false,
         "license": "cc0-1.0"
+    },
+    {
+        "name": "twitter_giossa_october",
+        "url": "https://github.com/sgongora27/giossa-gongora-guarani-2021.git",
+        "download_urls": 
+            [
+            ],
+        "format": "csv",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "Unknown"
+    },
+    {
+        "name": "twitter_politic_bots",
+        "url": "https://github.com/ParticipaPY/politic-bots.git",
+        "download_urls": 
+            [
+            ],
+        "format": "json",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "GPL-3.0"
+    },
+    {
+        "name": "twitter_covid_es",
+        "url": "https://www.kaggle.com/datasets/mmaguero/covid19-spanishtweets-earlylateapril2020",
+        "download_urls": 
+            [
+            ],
+        "format": "csv",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "CC BY-SA 4.0"
+    },
+    {
+        "name": "twitter_covid_py",
+        "url": "https://www.kaggle.com/datasets/mmaguero/covid19-spanishtweets-earlylateapril2020",
+        "download_urls": 
+            [
+            ],
+        "format": "csv",
+        "multilingual": true,
+        "parallel": false,
+        "synthetic": false,
+        "license": "CC BY-SA 4.0"
     }
 ]
