@@ -38,5 +38,9 @@ Publicly available corpora that contain text in Guarani.
 |32|[Opus-All-Es](https://opus.nlpl.eu/results/es&gn/corpus-result-table)|:white_check_mark:|:white_check_mark:| |Multiple|3,907|22,571|161,886|5.777|41.435|0.992| 
 |33|[Smolsent__En_Gn](https://huggingface.co/datasets/google/smol/viewer/smolsent__en_gn)|:white_check_mark:|:white_check_mark:| |CC BY 4.0|863|10,563|82,042|12.240|95.066|0.998| 
 |34|[Tatoeba](https://tatoeba.org/en/downloads)|:white_check_mark:| | |Creative Commons|3,367|13,269|95,040|3.941|28.227|0.939| 
-|35|[Udhr-Lid](https://huggingface.co/datasets/cis-lmu/udhr-lid)|:white_check_mark:|:white_check_mark:| |cc0-1.0|122|3,210|24,694|26.311|202.410|0.972| 
-| -- | Total | -- | -- | -- | -- | 1,244,399 | 37,317,099 | 273,698,871 | -- | -- | -- |  
+|35|[Twitter_Covid_Es](https://www.kaggle.com/datasets/mmaguero/covid19-spanishtweets-earlylateapril2020)|:white_check_mark:| | |CC BY-SA 4.0|20|729|5,495|36.450|274.750|0.995| 
+|36|[Twitter_Covid_Py](https://www.kaggle.com/datasets/mmaguero/covid19-spanishtweets-earlylateapril2020)|:white_check_mark:| | |CC BY-SA 4.0|2|72|525|36.000|262.500|0.994| 
+|37|[Twitter_Giossa_October](https://github.com/sgongora27/giossa-gongora-guarani-2021.git)|:white_check_mark:| | |Unknown|4,562|45,039|307,359|9.873|67.374|0.960| 
+|38|[Twitter_Politic_Bots](https://github.com/ParticipaPY/politic-bots.git)|:white_check_mark:| | |GPL-3.0|44|554|4,353|12.591|98.932|0.930| 
+|39|[Udhr-Lid](https://huggingface.co/datasets/cis-lmu/udhr-lid)|:white_check_mark:|:white_check_mark:| |cc0-1.0|122|3,210|24,694|26.311|202.410|0.972| 
+| -- | Total | -- | -- | -- | -- | 1,249,027 | 37,363,493 | 274,016,603 | -- | -- | -- |  
